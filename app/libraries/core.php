@@ -39,7 +39,7 @@ class core
         // On appelle le lien sous forme d'un controller, une methode et des parametres
         call_user_func_array([$this->controller , $this->method], $this->params);
     }
-    
+    // La fonction getUrl permet de creer des liens en utilisant un slash comme separateur
     public function getUrl()
     {
         if (isset($_GET['url'])) {
