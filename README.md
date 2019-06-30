@@ -3,8 +3,8 @@ Un tutoriel sur l'architecture mvc en php.
 # Explications
 
 1. Ce projet comporte 2 dossiers à la racine : app et public
-Le dossier app contient les fichiers de l'application
-Le dossier public contient les fichiers css et js
+Le dossier app contient les fichiers de l'application. C'est lui qui comporte l'architecture mvc : models-views-controllers
+Le dossier public contient les fichiers css et js.
 
 2. Ce projet contient 3 fichiers .htaccess :
 - Celui se trouvant à la racine indique que tous les liens doivent passer dans le dossier public
