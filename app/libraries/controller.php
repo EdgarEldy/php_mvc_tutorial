@@ -20,14 +20,13 @@ class controller
     
     // La fonction render permet de recuperer la vue avec son template
     
-    public function render($view)
+    public function render($view, $data=[])
     {
         ob_start();
         // On verifie que la vue existe
         if(file_exists(VIEWS . $view . '.php')) {
             require_once (VIEWS . $view . '.php');
         } else{
-            /// View does not exists
             die ('La vue n\'existe pas ');
         }
         // La variable content contient la vue en memoire tampon
