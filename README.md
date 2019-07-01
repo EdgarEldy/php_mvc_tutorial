@@ -1,7 +1,7 @@
 # php-mvc-tutoriel
 Un tutoriel sur l'architecture mvc en php.
 # Installations
-Telecharger la derniere version de wampserver ou de xampp. Moi, j'utilise xampp. Decommenter la ligne LoadModule rewrite_module modules/mod_rewrite.so se trouvant dans le fichier de configuration httpd.conf
+Télécharger la dernière version de wampserver ou de xampp. Moi, j'utilise xampp. Décommenter la ligne "LoadModule rewrite_module modules/mod_rewrite.so" se trouvant dans le fichier de configuration "httpd.conf"
 Copier le dossier dans www (wampserver) ou htdocs (xampp)
 # Explications
 
