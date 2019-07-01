@@ -23,5 +23,10 @@ class home extends controller
     {
         $this->render('home/about');
     }
+    
+    public function contact()
+    {
+        $this->render('home/contact');
+    }
 }
 
