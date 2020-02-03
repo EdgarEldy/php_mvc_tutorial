@@ -1,0 +1,11 @@
+{
+    "name": "edgareldy/php_mvc_tutorial",
+    "description": "A simple php tutorial using mvc architecture and MySQL",
+    "authors": [
+        {
+            "name": "Edgar MUHAMYANGABO",
+            "email": "ed.eldy21@live.com"
+        }
+    ],
+    "require": {}
+}
