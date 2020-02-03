@@ -1,0 +1,80 @@
+<script>
+function getModelesByMarqueId(str) {
+	var xhttp; 
+	  if (str == "") {
+	    document.getElementById("modele").innerHTML = "";
+	    return;
+	  }
+	  xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    document.getElementById("modele").innerHTML = this.responseText;
+	    }
+	  };
+	  xhttp.open("GET", "<?= URL_ROOT;?>/vehicules/getModeles/?q="+str, true);
+	  xhttp.send();
+}
+</script>		
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+				<li class="active">Centre d'appel | ECONET-LEO</li>
+			</ol>
+		</div><!--/.row-->
+		<!-- 
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Gestion des courriers</h1>
+			</div>
+		</div> <row-->
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Heures de pause</div>
+					<div class="panel-body">
+						<div class="col-md-6">
+							<form role="form" action="<?= URL_ROOT; ?>/heures_pause/new" method="post">
+								
+								<table>
+								<tr>
+							<div class="form-group">
+							<label>Heure de shift :</label>
+							<select name="heure_shift_id" class="form-control <?= (!empty($data['heure_shift_id_err'])) ? 'is-invalid' : ''; ?>">
+							<option value=""></option>		
+							<?php foreach ($data['heures_shift'] as $hs) : ?>	
+							<option value="<?php echo $hs->id_hs;?>"><?php echo $hs->heure_debut . " - " . $hs->heure_fin;?></option>	
+							<?php endforeach;?>
+							</select>
+							<span class="invalid-feedback"><?= $data['heure_shift_id_err'] ?></span>
+							</div>
+								</tr>	
+							<tr>
+							<div class="form-group">
+							<label>Heures de pause :</label>
+							<td>
+							<input type="time" name="pause_debut" id="heure" class="form-control <?php echo (!empty($data['pause_debut_err'])) ? 
+		                     'is-invalid' : '';?>" placeholder="" value="<?php echo $data['pause_debut'] ;?>">
+		                     <span class="invalid-feedback"><?php echo $data['pause_debut_err']; ?></span>
+							</td>
+							<td>
+							<input type="time" name="pause_fin" id="heure" class="form-control <?php echo (!empty($data['pause_fin_err'])) ? 
+		                     'is-invalid' : '';?>" placeholder="" value="<?php echo $data['pause_fin'] ;?>">
+		                     <span class="invalid-feedback"><?php echo $data['pause_fin_err']; ?></span>
+							</td>
+							</div>
+							</tr>
+							<tr>
+							<td>
+							<button type="submit" id="submit" class="btn btn-primary">Valider</button>
+							</td>
+							<td>
+							<button type="reset" name="reset" onclick="closed()" class="btn btn-default">Fermer</button>
+							</td>
+							</tr>
+								
+							</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div><!-- /.col-->
+								
