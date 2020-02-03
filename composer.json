@@ -7,5 +7,10 @@
             "email": "ed.eldy21@live.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "php_mvc_tutorial\\": "app/"
+        }
+    }
 }
