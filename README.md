@@ -1,20 +1,24 @@
-# php-mvc-tutoriel
-Un tutoriel sur l'architecture mvc en php.
+# php-mvc-tutorial
+A simple php web application based on the MVC architecture.
 # Installations
-Télécharger la dernière version de wampserver ou de xampp. Moi, j'utilise xampp. Décommenter la ligne "LoadModule rewrite_module modules/mod_rewrite.so" se trouvant dans le fichier de configuration "httpd.conf"
-Copier le dossier dans www (wampserver) ou htdocs (xampp)
-# Explications
 
-1. Ce projet comporte 2 dossiers à la racine : app et public
-Le dossier app contient les fichiers de l'application. C'est lui qui comporte l'architecture mvc : models-views-controllers
-Le dossier public contient les fichiers css et js.
+1. Download the latest version of wampp. 
+2. Download the latest version of php and copy php folder in C:\Program files. I am using php 7.3.3. 
+3. Uncomment this line 
+"LoadModule rewrite_module modules/mod_rewrite.so" in the config file "httpd.conf"
+4. Copy and paste this project in the htdocs folder.
+5. Open the project in visual studio code or your favorite text editor.
+6. Run this application in cmd using this command : php -S localhost:8000 -t public
+7. Enjoy ! :)
 
-2. Ce projet contient 3 fichiers .htaccess :
-- Celui se trouvant à la racine indique que tous les liens doivent passer dans le dossier public
-- Celui se trouvant dans public indique que tous les liens doivent passer par le fichier index.php
-- Celui se trouvant dans le dossier bloque tous les liens passant directement par le dossier app
+# Explanations
 
-3. Le fichier config contenu dans le dossier config permet de créer des constantes pour minimiser l'accès aux fichiers
-# Recommandations
+1. This project contains 2 folders in the root folder : app and public
+The app folder contains the application files. 
+The public folder contains resources files.
 
-Pour utiliser ce tutoriel, il faut avoir des connaissances en php surtout dans le programmation orientée object en php.
+2. The config file contains constant variables which consists of browsing from folder to folder.
+
+#Recommandations
+
+You must be familiar with Object oriented Programming and some design patterns(Singleton and Dependancy injection) in order to understand this tutorial. 
