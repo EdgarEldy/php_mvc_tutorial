@@ -1,19 +1,18 @@
 <?php
 
 /** 
- * @author Edgard
+ * @author EdgarEldy
  * 
  */
 
-namespace Gestion_shift\app\libraries\controller;
+namespace php_mvc_tutoria\app\libraries\controller;
 
 class controller
 {
 
     /**
      */
-    private $default_layout='default_layout';
-    private $new_layout='new_layout';
+    private $default='default';
     public function model($model)
     {
         require_once MODELS .$model. '.php';
@@ -29,7 +28,7 @@ class controller
       else 
           die('view does not exist !');
   }
-  
+
   public function render($view, $data= [])
   {
       ob_start();
@@ -41,23 +40,8 @@ class controller
           die ('View does not exists');
       }
       $content=ob_get_clean();
-      require_once DEFAULT_LAYOUT . $this->default_layout . '.phtml';
+      require_once DEFAULT_LAYOUT . $this->default . '.phtml';
   }
-  
-  
-  
-  public function new_view($view, $data= [])
-  {
-      ob_start();
-      // Check for view file
-      if(file_exists(VIEWS . $view . '.phtml')) {
-          require_once (VIEWS . $view . '.phtml');
-      } else{
-          /// View does not exists
-          die ('View does not exists');
-      }
-      $content=ob_get_clean();
-      require_once NEW_LAYOUT . $this->new_layout . '.phtml';
-  }
+
 }
 
