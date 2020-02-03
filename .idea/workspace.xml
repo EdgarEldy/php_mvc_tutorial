@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="52e6912f-706f-4a39-ad8a-a2867a00d81d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/views/orders/add.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/orders/edit.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/orders/index.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/products/add.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/products/edit.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/products/index.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/profiles/add.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/profiles/edit.phtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/views/profiles/index.phtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,9 +30,18 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/profiles/add.phtml">
           <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16">
+              <caret line="1" column="1" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -58,6 +58,7 @@
         <option value="$PROJECT_DIR$/app/config/config.php" />
         <option value="$PROJECT_DIR$/app/libraries/controller.php" />
         <option value="$PROJECT_DIR$/public/index.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -98,48 +99,7 @@
               <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
               <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="customers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="orders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="products" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php_mvc_tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="profiles" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="php_mvc_tutorial" type="b2602c69:ProjectViewProjectNode" />
@@ -200,10 +160,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6043000" />
+    <option name="totallyTimeSpent" value="6347000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49945828" visible="true" weight="0.18176973" />
       <window_info id="Structure" order="1" sideWeight="0.5005417" side_tool="true" visible="true" weight="0.18176973" />
@@ -247,13 +208,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
           <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
@@ -356,6 +310,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/profiles/add.phtml">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" column="1" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
