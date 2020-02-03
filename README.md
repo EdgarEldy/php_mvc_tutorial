@@ -19,6 +19,6 @@ The public folder contains resources files.
 
 2. The config file contains constant variables which consists of browsing from folder to folder.
 
-#Recommandations
+# Recommandations
 
 You must be familiar with Object oriented Programming and some design patterns(Singleton and Dependancy injection) in order to understand this tutorial. 
