@@ -1,9 +1,9 @@
 <?php
 /** 
- * @author Edgard
+ * @author EdgarEldy
  * 
  */
-namespace Gestion_shift\app\libraries\connection;
+namespace php_mvc_tutorial\app\libraries\connection;
 use PDO;
 use PDOException;
 class connection
@@ -11,7 +11,7 @@ class connection
 
     /**
      */
-    private $dsn= 'mysql:host=localhost;dbname=shift_db';
+    private $dsn= 'mysql:host=localhost;dbname=simple_store_db';
     private $user= 'root';
     private $password= '';
     private $db;
@@ -33,7 +33,7 @@ class connection
         
         catch(PDOException $e)
         {
-            $msg ="Erreur PDO dans "  . $e->getFile() . "L" . $e->getLine() . ":" . $e->getMessage();
+            $msg ="Error in "  . $e->getFile() . "L" . $e->getLine() . ":" . $e->getMessage();
             die($msg);
         }
     }
