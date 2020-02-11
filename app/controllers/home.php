@@ -14,8 +14,13 @@ class home extends controller
     public function __construct()
     {}
     
-    public function index() {
-       return $this->render('home/index') ;
+    public function index()
+    {
+        if (!isLoggedIn()) {
+            redirect('users/login') ;
+        }
+        
+        else return $this->home_view('home/index');
     }
 }
 
