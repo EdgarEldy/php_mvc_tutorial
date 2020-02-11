@@ -5,7 +5,7 @@
  * 
  */
 
-namespace php_mvc_tutoria\app\libraries\controller;
+namespace php_mvc_tutorial\app\libraries\controller;
 
 class controller
 {
