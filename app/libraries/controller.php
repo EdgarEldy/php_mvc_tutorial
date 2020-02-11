@@ -12,7 +12,7 @@ class controller
 
     /**
      */
-    private $default='default';
+    private $default_layout='default';
     public function model($model)
     {
         require_once MODELS .$model. '.php';
@@ -40,7 +40,7 @@ class controller
           die ('View does not exists');
       }
       $content=ob_get_clean();
-      require_once DEFAULT_LAYOUT . $this->default . '.phtml';
+      require_once DEFAULT_LAYOUT . $this->default_layout . '.phtml';
   }
 
 }
