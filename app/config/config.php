@@ -9,4 +9,4 @@ define('LIB', APP_ROOT . DS . 'libraries' . DS);
 define('MODELS', APP_ROOT . DS . 'models' . DS);
 define('VIEWS', APP_ROOT . DS . 'views' . DS);
 define('INC', APP_ROOT . DS . 'views' . DS .'inc' . DS);
-define('DEFAULT_LAYOUT', APP_ROOT . DS . 'views' . DS .'templates' . DS . 'default' . DS);
+define('DEFAULT_LAYOUT', APP_ROOT . DS . 'views' . DS .'templates' . DS . 'default_layout' . DS);
