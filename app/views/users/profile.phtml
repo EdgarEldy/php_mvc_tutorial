@@ -1,0 +1,83 @@
+<script language="javascript">  
+  function imprimer_bloc(Report, objet) {  
+  // D�finition de la zone � imprimer  
+  var zone = document.getElementById(objet).innerHTML;   
+  // Ouverture du popup  
+  var fen = window.open("", "", "height=800, width=1000,toolbar=0, menubar=0, scrollbars=1,resizable=1,status=0, location=0, left=10, top=10");   
+  // style du popup  
+  fen.document.body.style.color = '#000000';  
+  fen.document.body.style.backgroundColor = '#FFFFFF'; 
+  fen.document.body.style.padding = "20px";   
+  // Ajout des donn�es a imprimer 
+  fen.document.title = Report;  
+  fen.document.body.innerHTML += " " + zone + " ";    
+  // Impression du popup  
+  fen.window.print();   
+  //Fermeture du popup  
+  fen.window.close();  
+  return true;  
+  }  </script>
+    <SCRIPT LANGUAGE="JavaScript">
+//D'autres scripts sur http://www.toutjavascript.com
+//Si vous utilisez ce script, merci de m'avertir !  < webmaster@toutjavascript.com >
+function PopupCentrer(page,largeur,hauteur,options) {
+  var top=(screen.height-hauteur)/2;
+  var left=(screen.width-largeur)/2;
+  window.open(page,"","top="+top+",left="+left+",width="+largeur+",height="+hauteur+","+options);
+}
+</SCRIPT>   
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">Profil de <?= $_SESSION['username']; ?></div>
+          <div class="panel-body">
+            <div id="imprime_moi">
+              <table>
+              <thead>
+                                        <tr>
+                                        Profil utilisateur
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($data['users'] as $user) :?>
+                                        <tr>
+                                        <td>Nom : </td>
+                                        <td><?= $user->nom; ?> </td>
+                                        </tr>
+                                        <br/><br/>
+                                        <tr>
+                                        <td>Prenom : </td>
+                                        <td><?= $user->prenom; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Email : </td>
+                                        <td><?= $user->email; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Telephone : </td>
+                                        <td><?= $user->tel; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Adresse : </td>
+                                        <td><?= $user->adresse; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Sexe : </td>
+                                        <td><?= $user->sexe; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Etat civil : </td>
+                                        <td><?= $user->etat_civil; ?> </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Username : </td>
+                                        <td><?= $user->username; ?> </td>
+                                        </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+              </table>
+              <a href='javascript:PopupCentrer("<?= URL_ROOT; ?>/users/edit/<?= $user->id_user; ?>",450,500,"menubar=no,scrollbars=no,statusbar=no")' 
+						class="btn btn-primary">Modifier</a>
+            </div>
+          </div>
+        </div>
+      </div>

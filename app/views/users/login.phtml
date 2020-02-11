@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<?php require_once INC . 'head.phtml';?>
+
+
+<body>
+	
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-default">
+				<div class="panel-heading">Gestion des shifts | Centre d'appel ECONET-LEO </div>
+				<div class="panel-body">
+					<form role="form" action="<?= URL_ROOT; ?>/users/login" method="post">
+						<fieldset>
+							<div class="form-group">
+								<input type="text" class="form-control <?= (!empty($data['username_err'])) ? 'is-invalid' : ''; ?>" 
+								placeholder="Nom d'utilisateur" name="username" autofocus="" value="<?= $data['username']; ?>">
+								<span class="invalid-feedback"><?= $data['username_err'] ?></span>
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control <?= (!empty($data['pwd_err'])) ? 'is-invalid' : ''; ?>" 
+								placeholder="Mot de passe" name="pwd" value="<?= $data['pwd']; ?>">
+								<span class="invalid-feedback"><?= $data['pwd_err'] ?></span>
+							</div>
+                        <button type="submit" class="btn btn-primary">Entrer</button>
+                        <button type="reset" class="btn btn-reset">Annuler</button>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div><!-- /.col-->
+	</div><!-- /.row -->	
+	
+	<?php require_once INC . 'scripts.phtml';?>		
+</body>
+
+</html>
