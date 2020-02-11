@@ -6,7 +6,7 @@ namespace models;
  * @author EDGARELDY
  *        
  */
-class profile
+class category
 {
 
     /**

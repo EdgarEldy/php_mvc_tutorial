@@ -1,10 +1,17 @@
 <?php
+namespace models;
 
-
-namespace php_mvc_tutorial\app\libraries\connection;
-
-
+/**
+ *
+ * @author EDGARELDY
+ *        
+ */
 class order
 {
 
+    /**
+     */
+    public function __construct()
+    {}
 }
+

@@ -1,10 +1,17 @@
 <?php
+namespace models;
 
-
-namespace php_mvc_tutorial\app\libraries\connection;
-
-
+/**
+ *
+ * @author EDGARELDY
+ *        
+ */
 class product
 {
 
+    /**
+     */
+    public function __construct()
+    {}
 }
+
