@@ -1,36 +1,26 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<ul class="nav menu">
-			<li class="active"><a href="<?= URL_ROOT;?>"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Accueil</a></li>
-			<?php if ($_SESSION['nom_profil'] == 'Admin') : ?>
-				
-				<li><a href="<?= URL_ROOT;?>/shifts"><svg class="glyph stroked calendar">
-				<use xlink:href="#stroked-calendar"></use></svg> Shifts</a></li>
-			<li><a href="<?= URL_ROOT;?>/pauses"><svg class="glyph stroked clock">
-				<use xlink:href="#stroked-clock"></use></svg> Pauses</a></li>
-			<li><a href="<?= URL_ROOT;?>/days_off"><svg class="glyph stroked star">
-				<use xlink:href="#stroked-star"></use></svg> Days-off</a></li>
+			<li class="active"><a href="<?= URL_ROOT;?>"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Home</a></li>	
+				<li><a href="<?= URL_ROOT;?>/orders"><svg class="glyph stroked calendar">
+				<use xlink:href="#stroked-calendar"></use></svg> Orders</a></li>
+			<li><a href="<?= URL_ROOT;?>/customers"><svg class="glyph stroked clock">
+				<use xlink:href="#stroked-clock"></use></svg> Customers</a></li>
 			<li class="parent">
 				<a href="#">
 					<span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down">
-						<use xlink:href="#stroked-chevron-down"></use></svg></span> Paramètres 
+						<use xlink:href="#stroked-chevron-down"></use></svg></span> Configuration 
 				</a>
 				<ul class="children collapse" id="sub-item-1">
 					<li>
-						<a class="" href="<?= URL_ROOT;?>/heures_shift">
+						<a class="" href="<?= URL_ROOT;?>/products">
 							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right">
-							</use></svg> Heures de shift
-						</a>
-					</li>
-					<li>
-						<a class="" href="<?= URL_ROOT;?>/heures_pause">
-							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right">
-							</use></svg> Heures de pause
+							</use></svg> Products
 						</a>
 					</li>
 					<li>
 						<a class="" href="<?= URL_ROOT;?>/profiles">
 							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right">
-							</use></svg> Profil utilisateur
+							</use></svg> User profile
 						</a>
 					</li>
 					<li>
@@ -38,20 +28,10 @@
 				</ul>
 			</li>
 			<li><a href="<?= URL_ROOT;?>/users"><svg class="glyph stroked male-user">
-				<use xlink:href="#stroked-male-user"></use></svg> Gestion des utilisateurs</a></li>
+				<use xlink:href="#stroked-male-user"></use></svg> Users</a></li>
 			<li><a href="<?= URL_ROOT;?>/users/login">
-			<svg class="glyph stroked male-user"><use xlink:href="#stroked-cancel"></use></svg> Déconnexion</a>
+			<svg class="glyph stroked male-user"><use xlink:href="#stroked-cancel"></use></svg> Logout</a>
 			</li>
-			<?php elseif ($_SESSION['nom_profil'] === 'Agent') : ?>
-			<li><a href="<?= URL_ROOT;?>/shifts/user"><svg class="glyph stroked table">
-				<use xlink:href="#stroked-table"></use></svg> Shift</a></li>
-				<li><a href="<?= URL_ROOT;?>/days_off/user"><svg class="glyph stroked calendar">
-				<use xlink:href="#stroked-calendar"></use></svg> Day-off</a></li>
-				<li><a href="<?= URL_ROOT;?>/pauses/user"><svg class="glyph stroked clock">
-				<use xlink:href="#stroked-clock"></use></svg> Pauses</a></li>
-				<li><a href="<?= URL_ROOT;?>/users/login"><svg class="glyph stroked male-user">
-				<use xlink:href="#stroked-cancel"></use></svg> Déconnexion</a></li>
-			<?php endif;?>
 		</ul>
 		
 	</div><!--/.sidebar-->
