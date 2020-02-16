@@ -12,10 +12,10 @@ class customers extends controller
 
     /**
      */
-    protected $proprietaireModel;
+    protected $customerModel;
     public function __construct()
     {
-        $this->proprietaireModel= $this->model('proprietaire');
+        $this->customerModel= $this->model('customer');
     }
     
     public function index()
@@ -23,11 +23,11 @@ class customers extends controller
         if (!isLoggedIn()) {
             redirect('users/login') ;
         }
-        $proprietaires= $this->proprietaireModel->getProprietaires();
+        $customers= $this->customerModel->getcustomers();
         $data=[
-            'proprietaires' => $proprietaires
+            'customers' => $customers
         ];
-        $this->render('proprietaires/index',$data);
+        $this->render('customers/index',$data);
     }
     
     public function add()
@@ -36,55 +36,33 @@ class customers extends controller
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
             //Process form
             $data = [
-                'nom' => trim($_POST['nom']),
-                'prenom' => trim($_POST['prenom']),
+                'name' => trim($_POST['name']),
                 'tel' => trim($_POST['tel']),
-                'email' => trim($_POST['email']),
-                'adresse' => trim($_POST['adresse']),
-                'cni' => trim($_POST['cni']),
-                'nom_err' => '',
-                'prenom_err' => '',
+                'address' => trim($_POST['address'])
+                'name_err' => '',
                 'tel_err' => '',
-                'email_err' => '',
-                'adresse_err' => '',
-                'cni_err' => ''
+                'address_err' => ''
             ];
-            // On valide le nom
-            if ( empty($data['nom']) ) {
-                $data['nom_err'] = 'Veuillez entrer votre nom !';
+            // Validate the name
+            if ( empty($data['name']) ) {
+                $data['name_err'] = 'Please enter name of the customer !';
             }
             
-            // On valide le prenom
-            if ( empty($data['prenom']) ) {
-                $data['prenom_err'] = 'Veuillez entrer votre prenom !';
-            }
-            
-            // On valide le nom d'utilisateur
+            // Validate tel
             if ( empty($data['tel']) ) {
-                $data['tel_err'] = 'Veuillez entrer votre numero de telephone !';
+                $data['tel_err'] = 'Please enter the mobile number !';
             }
             
-            // Validate email
-            if ( empty($data['email']) ) {
-                $data['email_err'] = 'Veuillez entrer votre email !';
-            }
-            
-            // Validate adresse
-            if ( empty($data['adresse']) ) {
-                $data['adresse_err'] = 'Veuillez entrer l\'adresse !';
-            }
-            
-            // Validate Confirm Password
-            if ( empty($data['cni']) ) {
-                $data['cni_err'] = 'Veuillez confirmer la carte d\'identit� !';
+            // Validate address
+            if ( empty($data['address']) ) {
+                $data['address_err'] = 'Please enter the address !';
             }
             
             //Make sure errors are empty
-            if ( empty($data['nom_err']) && empty($data['prenom_err']) && empty($data['tel_err']) && empty($data['email_err'])
-                && empty($data['adresse_err']) && empty($data['cni_err']) ) {
-                    if ( $this->proprietaireModel->add($data) ) {
-                        flash('register_success','You are now registered! You !');
-                        redirect('proprietaires/index');
+            if ( empty($data['name_err']) && empty($data['tel_err']) && empty($data['address_err']) ) {
+                    if ( $this->customerModel->add($data) ) {
+                        flash('register_success','You are now registered !');
+                        redirect('customers/index');
                     } else {
                         die ('Something wrong');
                     }
@@ -92,7 +70,7 @@ class customers extends controller
                 else
                 {
                     // Load view with errors
-                    $this->render('proprietaires/add',$data);
+                    $this->render('customers/add',$data);
                 }
                 
         }
@@ -100,20 +78,14 @@ class customers extends controller
         else
         {
             $data = [
-                'nom' => '',
-                'prenom' => '',
+                'name' => '',
                 'tel' => '',
-                'email' => '',
-                'adresse' => '',
-                'cni' => '',
-                'nom_err' => '',
-                'prenom_err' => '',
+                'address' => '',
+                'name_err' => '',
                 'tel_err' => '',
-                'email_err' => '',
-                'adresse_err' => '',
-                'cni_err' => ''
+                'address_err' => ''
             ];
-            $this->render('proprietaires/add',$data);
+            $this->render('customers/add',$data);
         }
     }
     
@@ -123,56 +95,38 @@ class customers extends controller
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
             $data=[
                 'id' => $id,
-                'nom' => trim($_POST['nom']),
-                'prenom' => trim($_POST['prenom']),
+                'name' => trim($_POST['name']),
                 'tel' => trim($_POST['tel']),
-                'email' => trim($_POST['email']),
-                'adresse' => trim($_POST['adresse']),
-                'cni' => trim($_POST['cni']),
-                'nom_err' => '',
-                'prenom_err' => '',
+                'address' => trim($_POST['address'])
+                'name_err' => '',
                 'tel_err' => '',
-                'email_err' => '',
-                'adresse_err' => '',
-                'cni_err' => ''
+                'address_err' => ''
             ];
             
-            // On valide le nom
-            if ( empty($data['nom']) ) {
-                $data['nom_err'] = 'Veuillez entrer votre nom !';
+            // On valide le name
+            if ( empty($data['name']) ) {
+                $data['name_err'] = 'Veuillez entrer votre name !';
+            }
             }
             
-            // On valide le prenom
-            if ( empty($data['prenom']) ) {
-                $data['prenom_err'] = 'Veuillez entrer votre prenom !';
-            }
-            
-            // On valide le nom d'utilisateur
+            // On valide le name d'utilisateur
             if ( empty($data['tel']) ) {
                 $data['tel_err'] = 'Veuillez entrer votre numero de telephone !';
             }
-            
-            // Validate email
-            if ( empty($data['email']) ) {
-                $data['email_err'] = 'Veuillez entrer votre email !';
             }
             
-            // Validate adresse
-            if ( empty($data['adresse']) ) {
-                $data['adresse_err'] = 'Veuillez entrer l\'adresse !';
+            // Validate address
+            if ( empty($data['address']) ) {
+                $data['address_err'] = 'Veuillez entrer l\'address !';
             }
-            
-            // Validate Confirm Password
-            if ( empty($data['cni']) ) {
-                $data['cni_err'] = 'Veuillez confirmer la carte d\'identit� !';
             }
             
             //Make sure errors are empty
-            if ( empty($data['nom_err']) && empty($data['prenom_err']) && empty($data['tel_err']) && empty($data['email_err'])
-                && empty($data['adresse_err']) && empty($data['cni_err']) ) {
-                    if ( $this->proprietaireModel->update($data) ) {
+            if ( empty($data['name_err']) && empty($data['tel_err'])
+                && empty($data['address_err']) ) {
+                    if ( $this->customerModel->update($data) ) {
                         flash('register_success','You are now registered! You !');
-                        redirect('proprietaires/index');
+                        redirect('customers/index');
                     } else {
                         die ('Something wrong');
                     }
@@ -180,46 +134,38 @@ class customers extends controller
                 else
                 {
                     // Load view with errors
-                    $this->render('proprietaires/edit',$data);
+                    $this->render('customers/edit',$data);
                 }
-                
-                
         }
         
         else
         {
-            $proprietaire=$this->proprietaireModel->getProprietaireById($id);
+            $customer=$this->customerModel->getcustomerById($id);
             $data = [
-                'id'=>$proprietaire->id_prop,
-                'nom' => $proprietaire->nom_prop,
-                'prenom' => $proprietaire->prenom_prop,
-                'tel' => $proprietaire->tel_prop,
-                'email' => $proprietaire->email_prop,
-                'adresse' => $proprietaire->adresse_prop,
-                'cni' =>  $proprietaire->cni_prop,
-                'nom_err' => '',
-                'prenom_err' => '',
+                'id'=>$customer->customer_id,
+                'name' => $customer->name,
+                'tel' => $customer->tel,
+                'address' => $customer->address,
+                'name_err' => '',
                 'tel_err' => '',
-                'email_err' => '',
-                'adresse_err' => '',
-                'cni_err' => ''
+                'address_err' => ''
             ];
-            $this->render('proprietaires/edit',$data);
+            $this->render('customers/edit',$data);
         }
     }
     
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->proprietaireModel->delete($id) ){
-                flash('Suppression reussi', 'proprietaire removed');
-                redirect('proprietaires/index');
+            if( $this->customerModel->delete($id) ){
+                flash('Suppression reussi', 'customer removed');
+                redirect('customers/index');
             } else {
                 die('Something went wrong');
             }
             
         } else {
-            redirect('proprietaires/index');
+            redirect('customers/index');
         }
     }
 }

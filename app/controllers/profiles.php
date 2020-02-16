@@ -11,10 +11,10 @@ class profiles extends controller
 
     /**
      */
-    protected $profilModel;
+    protected $profileModel;
     public function __construct()
     {
-        $this->profilModel=$this->model('profil');
+        $this->profileModel=$this->model('profile');
     }
     
     public function index()
@@ -22,11 +22,11 @@ class profiles extends controller
         if (!isLoggedIn()) {
             redirect('users/login')  ;
         }
-        $profils=$this->profilModel->getprofiles();
+        $profiles=$this->profileModel->getprofiles();
         $data= [
-            'profils' => $profils
+            'profiles' => $profiles
         ];
-        return $this->render('profils/index',$data);
+        return $this->render('profiles/index',$data);
     }
     
     public function add()
@@ -35,26 +35,26 @@ class profiles extends controller
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
             //Process form
             $data = [
-                'nom_profil' => trim($_POST['nom_profil']),
-                'nom_profil_err' => ''
+                'profile_name' => trim($_POST['profile_name']),
+                'profile_name_err' => ''
             ];
             
-            // Validate nom_profil
-            if ( empty($data['nom_profil']) ) {
-                $data['nom_profil_err'] = 'Veuillez entrer le profil !';
+            // Validate profile name
+            if ( empty($data['profile_name']) ) {
+                $data['profile_name_err'] = 'Please enter profile name !';
             } else {
-                // Check nom_profil
-                if ( $this->profilModel->getprofilByName($data['nom_profil']) ) {
-                    $data['nom_profil_err'] = 'Ce profil existe deja !';
+                // Check profile name
+                if ( $this->profileModel->getprofilByName($data['profile_name']) ) {
+                    $data['profile_name_err'] = 'Profile name already exists !';
                 }
             }
             
             //Make sure errors are empty
-            if ( empty($data['nom_profil_err']) ) {
+            if ( empty($data['profile_name_err']) ) {
                 
-                if ( $this->profilModel->add($data) ) {
-                    flash('Enregistrement r�ussi','Le profil a ete ajout� !');
-                    redirect('profils/index');
+                if ( $this->profileModel->add($data) ) {
+                    //flash('Enregistrement r�ussi','Le profil a ete ajout� !');
+                    redirect('profiles/index');
                 } else {
                     die ('Something wrong');
                 }
@@ -62,7 +62,7 @@ class profiles extends controller
             else
             {
                 // Load view with errors
-                $this->render('profils/add',$data);
+                $this->render('profiles/add',$data);
             }
             
         }
@@ -70,10 +70,10 @@ class profiles extends controller
         else
         {
             $data = [
-                'nom_profil' => '',
-                'nom_profil_err' => ''
+                'profile_name' => '',
+                'profile_name_err' => ''
             ];
-            $this->render('profils/add',$data);
+            $this->render('profiles/add',$data);
         }
     }
     
@@ -83,50 +83,49 @@ class profiles extends controller
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
             $data=[
                 'id' => $id,
-                'nom_profil'=>trim($_POST['nom_profil']),
-                'nom_profil_err'=>''
+                'profile_name'=>trim($_POST['profile_name']),
+                'profile_name_err'=>''
             ];
             
             //Validation
-            if (empty($data['nom_profil'])) {
-                $data['nom_profil_err'] = 'Veuillez entrer le profil !'  ;
+            if (empty($data['profile_name'])) {
+                $data['profile_name_err'] = 'Please enter profile name !'  ;
             }
             
-            if (empty($data['nom_profil_err'])) {
-                if ($this->profilModel->update($data)) {
+            if (empty($data['profile_name_err'])) {
+                if ($this->profileModel->update($data)) {
                     flash('Mise a jour reussi', 'Le profil a ete mis a jour ')  ;
-                    redirect('profils/index');
+                    redirect('profiles/index');
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('profils/edit',$data);
-            
+            else $this->render('profiles/edit',$data);           
         }
         
         else
         {
-            $profil=$this->profilModel->getprofilById($id);
+            $profile=$this->profileModel->getprofileById($id);
             $data=[
-                'id'=>$profil->id_profil,
-                'nom_profil'=> $profil->nom_profil,
-                'nom_profil_err'=>''
+                'id'=>$profile->profile_id,
+                'profile_name'=> $profile->profile_name,
+                'profile_name_err'=>''
             ];
-            $this->render('profils/edit',$data);
+            $this->render('profiles/edit',$data);
         }
     }
     
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->profilModel->delete($id) ){
+            if( $this->profileModel->delete($id) ){
                 flash('Suppression reussi', 'Post removed');
-                redirect('profils/index');
+                redirect('profiles/index');
             } else {
                 die('Something went wrong');
             }
             
         } else {
-            redirect('profils/index');
+            redirect('profiles/index');
         }
     } //end function
 }

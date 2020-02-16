@@ -11,22 +11,23 @@ class categories extends controller
 
     /**
      */
-    protected $marqueModel;
+    protected $categoryModel;
     public function __construct()
     {
-        $this->marqueModel=$this->model('marque');
+        $this->categoryModel=$this->model('category');
     }
 
+    //Call the view : categories/index
     public function index()
     {
         if (!isLoggedIn()) {
             redirect('users/login')  ;
         }
-        $marques=$this->marqueModel->getMarques();
+        $categories=$this->categoryModel->getCategories();
         $data= [
-            'marques' => $marques
+            'categories' => $categories
         ];
-        return $this->render('marques/index',$data);
+        return $this->render('categories/index',$data);
     }
 
     public function add()
@@ -35,26 +36,25 @@ class categories extends controller
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
             //Process form
             $data = [
-                'nom_marque' => trim($_POST['nom_marque']),
-                'nom_marque_err' => ''
+                'cat_name' => trim($_POST['cat_name']),
+                'cat_name_err' => ''
             ];
 
-            // Validate nom_marque
-            if ( empty($data['nom_marque']) ) {
-                $data['nom_marque_err'] = 'Veuillez entrer la marque de voiture !';
+            // Validate cat_name
+            if ( empty($data['cat_name']) ) {
+                $data['cat_name_err'] = 'Please enter the name of the category !';
             } else {
-                // Check nom_marque
-                if ( $this->marqueModel->getMarqueByName($data['nom_marque']) ) {
-                    $data['nom_marque_err'] = 'Cette marque existe deja !';
+                // Check cat_name
+                if ( $this->categoryModel->getCategoryByName($data['cat_name']) ) {
+                    $data['cat_name_err'] = 'This category already exists !';
                 }
             }
 
             //Make sure errors are empty
-            if ( empty($data['nom_marque_err']) ) {
+            if ( empty($data['cat_name_err']) ) {
 
-                if ( $this->marqueModel->add($data) ) {
-                    flash('marque_message','La marque de voiture a ete ajoutee avec succes !');
-                    redirect('marques');
+                if ( $this->categoryModel->add($data) ) {
+                    redirect('categories');
                 } else {
                     die ('Something wrong');
                 }
@@ -62,7 +62,7 @@ class categories extends controller
             else
             {
                 // Load view with errors
-                $this->render('marques/add',$data);
+                $this->render('categories/add',$data);
             }
 
         }
@@ -70,10 +70,10 @@ class categories extends controller
         else
         {
             $data = [
-                'nom_marque' => '',
-                'nom_marque_err' => ''
+                'cat_name' => '',
+                'cat_name_err' => ''
             ];
-            $this->render('marques/add',$data);
+            $this->render('categories/add',$data);
         }
     }
 
@@ -83,50 +83,49 @@ class categories extends controller
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
             $data=[
                 'id' => $id,
-                'nom_marque'=>trim($_POST['nom_marque']),
-                'nom_marque_err'=>''
+                'cat_name'=>trim($_POST['cat_name']),
+                'cat_name_err'=>''
             ];
 
-            //Validation du nom de la marque
-            if (empty($data['nom_marque'])) {
-                $data['nom_marque_err'] = 'Veuillez entrer la marque de la voiture !'  ;
+            //Validate the category name
+            if (empty($data['cat_name'])) {
+                $data['cat_name_err'] = 'Please enter the name of the category !'  ;
             }
 
-            if (empty($data['nom_marque_err'])) {
-                if ($this->marqueModel->update($data)) {
-                    flash('marque_saved', 'La marque a ete mis a jour ')  ;
-                    redirect('marques');
+            if (empty($data['cat_name_err'])) {
+                if ($this->categoryModel->update($data)) {
+                    redirect('categories');
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('marques/edit',$data);
+            else $this->render('categories/edit',$data);
 
         }
 
         else
         {
-            $marque=$this->marqueModel->getMarqueById($id);
+            $category=$this->categoryModel->getCategoryById($id);
             $data=[
-                'id'=>$marque->id_marque,
-                'nom_marque'=> $marque->nom_marque,
-                'nom_marque_err'=>''
+                'id'=>$category->cat_id,
+                'cat_name'=> $category->cat_name,
+                'cat_name_err'=>''
             ];
-            $this->render('marques/edit',$data);
+            $this->render('categories/edit',$data);
         }
     }
 
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->marqueModel->delete($id) ){
-                flash('delete_message', 'La marque a �t� suprim�e avec succes');
-                redirect('marques');
+            if( $this->categoryModel->delete($id) ){
+                flash('delete_message', 'Category has been removed');
+                redirect('categories');
             } else {
                 die('Something went wrong');
             }
 
         } else {
-            redirect('marques/index');
+            redirect('categories/index');
         }
     } //end function
 }
