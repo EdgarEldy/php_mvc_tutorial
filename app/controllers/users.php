@@ -11,347 +11,305 @@ class users extends controller
 
     /**
      */
-    protected $profilModel,$userModel;
+    protected $profileModel,$userModel;
     public function __construct()
     {
-        $this->profilModel=$this->model('profil');
-        $this->userModel=$this->model('utilisateur');
+      $this->userModel = $this->model('User');
+      $this->profileModel = $this->model('profile');
     }
     
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login') ;
+        if(!isLoggedIn() ){
+            redirect('users/login');
         }
-        $users= $this->userModel->getUsers();
+        $users = $this->userModel->getUsers();
         $data = [
-            'users' =>$users
+            'users' => $users
         ];
-        return $this->render('users/index',$data);
+        return $this->view('users/index', $data);
     }
-    
+
     public function add()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
-            $profil =$this->profilModel->getProfiles();
-            //var_dump($profil);
-            $date= date('Y-m-d');
-            //Process form
+        //Check for POST
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            // Sanitize POST Data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $profile = $this->profileModel->getprofiles();
+
+            // Process form
             $data = [
-                'profil' => $profil,
-                'profil_id' => trim($_POST['profil_id']),
-                'nom' => trim($_POST['nom']),
-                'prenom' => trim($_POST['prenom']),
-                'username' => trim($_POST['username']),
-                'email' => trim($_POST['email']),
-                'pwd' => trim($_POST['pwd']),
-                'confirm_pwd' => trim($_POST['confirm_pwd']),
-                'date_registered' => $date,
-                'nom_err' => '',
-                'prenom_err' => '',
-                'username_err' => '',
-                'email_err' => '',
-                'pwd_err' => '',
-                'confirm_pwd_err' => ''
+            'profile' => $profile,
+            'fk_profile_id' => trim($_POST['fk_profile_id']),
+            'username' => trim($_POST['username']),
+            'pwd' => trim($_POST['pwd']),
+            'confirm_pwd' => trim($_POST['confirm_pwd']),
+            'fk_profile_id_err' => '',
+            'username_err' => '',
+            'pwd_err' => '',
+            'confirm_pwd_err' => ''
             ];
-            // On valide le nom
-            if ( empty($data['nom']) ) {
-                $data['nom_err'] = 'Veuillez entrer votre nom !';
+
+            //Validate profile
+            if ( empty($data['fk_profile_id']) ) {
+                $data['fk_profile_id_err'] = 'Please select profile name !';
             }
-            
-            // On valide le prenom
-            if ( empty($data['prenom']) ) {
-                $data['prenom_err'] = 'Veuillez entrer votre prenom !';
-            }
-            
-            // On valide le nom d'utilisateur
+
+            // Validate username
             if ( empty($data['username']) ) {
-                $data['username_err'] = 'Veuillez entrer votre nom d\'utilisateur !';
-            }
-            
-            // Validate email
-            if ( empty($data['email']) ) {
-                $data['email_err'] = 'Veuillez entrer votre email !';
+                $data['username_err'] = 'Please inform your username';
             } else {
-                // Check email
-                if ( $this->userModel->getUserByEmail($data['email']) ) {
-                    $data['email_err'] = 'Votre email est deja attribu� !';
+                // Check username
+                if ( $this->userModel->getUserByUsername($data['username']) ) {
+                    $data['username_err'] = 'username is already in use. Choose another one!';
                 }
             }
-            
-            // Validate Password
-            if ( empty($data['pwd']) ) {
-                $data['pwd_err'] = 'Veuillez entrer votre mot de passe !';
-            } elseif ( strlen($data['pwd']) < 6 ) {
-                $data['pwd_err'] = 'Le mot de passe doit avoir au moins 6 caracteres !';
-            }
-            
-            // Validate Confirm Password
-            if ( empty($data['confirm_pwd']) ) {
-                $data['confirm_pwd_err'] = 'Veuillez confirmer votre mot de passe !';
-            } else if ( $data['pwd'] != $data['confirm_pwd'] ) {
-                $data['confirm_pwd_err'] = 'Le mot de passe ne correspond pas !';
-            }
-            
-            //Make sure errors are empty
-            if ( empty($data['nom_err']) && empty($data['prenom_err']) && empty($data['username_err']) && empty($data['email_err'])
-                && empty($data['pwd_err']) && empty($data['confirm_pwd_err']) ) {
-                    // Hash Password
-                    $data['pwd'] = password_hash($data['pwd'], PASSWORD_DEFAULT);
-                    
-                    if ( $this->userModel->register($data) ) {
-                        flash('register_success','You are now registered! You !');
-                        $this->login();
-                        //redirect('posts/login');
-                    } else {
-                        die ('Something wrong');
-                    }
-                }
-                else
-                {
-                    // Load view with errors
-                    $this->render('users/add',$data);
-                }
-                
-        }
-        
-        else
-        {
-            $profil =$this->profilModel->getProfiles();
+
+             // Validate pwd
+             if ( empty($data['pwd']) ) {
+                $data['pwd_err'] = 'Please inform your pwd';
+             } elseif ( strlen($data['pwd']) < 6 ) {
+                $data['pwd_err'] = 'pwd must be at least 6 characters';
+             }
+
+             // Validate Confirm pwd
+             if ( empty($data['confirm_pwd']) ) {
+                 $data['confirm_pwd_err'] = 'Please inform your pwd';
+             } else if ( $data['pwd'] != $data['confirm_pwd'] ) {
+                 $data['confirm_pwd_err'] = 'pwd does not match!';
+             }
+
+             //Make sure errors are empty
+             if ( empty($data['fk_profile_id_err']) && empty($data['username_err']) && empty($data['pwd_err']) && empty($data['confirm_pwd_err']) ) {
+                 // Hash pwd
+                 $data['pwd'] = password_hash($data['pwd'], PASSWORD_DEFAULT);
+
+                 if ( $this->userModel->add($data) ) {
+                     flash('register_success','You are now registered! You !');
+                     redirect('home');
+                 } else {
+                     die ('Something wrong');
+                 }
+             } else{
+                 // Load view with errors
+                 $this->render('users/add',$data);
+             }
+        } else {
+            // Init data
+            $profile =$this->profileModel->getProfiles();
             $data = [
-                'profil' => $profil,
-                'profil_id' => '',
-                'nom' => '',
-                'prenom' => '',
+                'profile' => $profile,
+                'fk_profile_id_err' => '',
                 'username' => '',
-                'email' => '',
                 'pwd' => '',
                 'confirm_pwd' => '',
-                'nom_err' => '',
-                'prenom_err' => '',
                 'username_err' => '',
-                'email_err' => '',
                 'pwd_err' => '',
                 'confirm_pwd_err' => ''
             ];
-            $this->render('users/add',$data);
+
+            // Load view
+            $this->render('users/add', $data);
         }
     }
-    
+
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] =='POST') {
-            $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
-            
-            //On procede a la recuperation des donnees du formulaire
-            
-            $data= [
-                'email' => trim($_POST['email']),
+        //Check for POST
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            // Process form
+            // Sanitize POST Data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            // Process form
+            $data = [
+                'username' => trim($_POST['username']),
                 'pwd' => trim($_POST['pwd']),
-                'email_err' =>'',
-                'pwd_err' => ''
+                'username_err' => '',
+                'pwd_err' => '',
             ];
-            
-            //Validation de l'email
-            if (empty($data['email'])) {
-                $data['email_err'] = 'Veuillez saisir votre email !' ;
+
+            // Validate username
+            if ( empty($data['username']) ) {
+                $data['username_err'] = 'Please inform your username';
+            } else if (! $this->userModel->getUserByUsername($data['username']) ) {
+                // User not found
+                $data['username_err'] = 'No user found!';
             }
-            elseif (!$this->userModel->getUserByEmail($data['email']))
-            {
-                $data['email_err'] = 'Utilisateur non trouv� !';
+
+            // Validate pwd
+            if ( empty($data['pwd']) ) {
+                $data['pwd_err'] = 'Please inform your pwd';
             }
-            
-            // Validation du mot de passe
-            if (empty($data['pwd'])) {
-                $data['pwd_err'] = 'Veuillez entrer votre mot de passe !'  ;
-            }
-            
-            // Make sure datas are empty
-            if (empty($data['email_err']) && empty($data['pwd_err'])) {
-                $userConnected= $this->userModel->login($data['email'], $data['pwd'])  ;
-                if ($userConnected) {
-                    $this->createUserSession($userConnected)  ;
-                }
-                
-                else
-                {
-                    $data=[
-                        'email' => '',
+
+            //Make sure are empty
+            if ( empty($data['username_err']) && empty($data['pwd_err']) ) {
+                // Validated
+                // Check and set logged in user
+                $userAuthenticated = $this->userModel->login($data['username'], $data['pwd']);
+                if ( $userAuthenticated) {
+                    // Create session
+                    $this->createUserSession($userAuthenticated);
+                } else {
+                    $data = [
+                        'username' => trim($_POST['username']),
                         'pwd' => '',
-                        'email_err' => '' ,
-                        'pwd_err' => 'Votre mot de passe ne correspond pas !'
+                        'username_err' => 'username or pwd are incorrect',
+                        'pwd_err' => 'username or pwd are incorrect',
                     ];
-                    
                     $this->view('users/login', $data);
                 }
+            } else {
+                // Load view with errors
+                $this->view('users/login',$data);
             }
-            
-            else
-            {
-                $this->view('users/login', $data);
-            }
-            
-        }
-        
-        else
-        {
-            $data= [
-                'email' => '',
+        } else {
+            // Init data
+            $data = [
+                'username' => '',
                 'pwd' => '',
-                'email_err' =>'',
-                'pwd_err' => ''
+                'username_err' => '',
+                'pwd_err' => '',
             ];
-            
-            // On appelle la vue
+            // Load view
             $this->view('users/login', $data);
         }
     }
-    public function edit($id)
+
+    public function logout()
     {
-        if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
-            $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
-            $user=$this->userModel->getUserById($id);
-            $data=[
-                'id' => $id,
-                'nom_profil'=>$user->nom_profil,
-                'profil_id'=>trim($_POST['profil_id']),
-                'nom' => trim($_POST['nom']),
-                'prenom' => trim($_POST['prenom']),
-                'tel' => trim($_POST['tel']),
-                'adresse' => trim($_POST['adresse']),
-                'username' => trim($_POST['username']),
-                'email' => trim($_POST['email']),
-                'pwd' => trim($_POST['pwd']),
-                'confirm_pwd' => trim($_POST['confirm_pwd']),
-                'nom_err' => '',
-                'prenom_err' => '',
-                'tel_err' => '',
-                'adresse_err' => '',
-                'username_err' => '',
-                'email_err' => '',
-                'pwd_err' => '',
-                'confirm_pwd_err' => ''
-            ];
-            
-            // On valide le nom
-            if ( empty($data['nom']) ) {
-                $data['nom_err'] = 'Veuillez entrer votre nom !';
-            }
-            
-            // On valide le prenom
-            if ( empty($data['prenom']) ) {
-                $data['prenom_err'] = 'Veuillez entrer votre prenom !';
-            }
-            
-            // On valide le numero de telephone
-            if ( empty($data['tel']) ) {
-                $data['tel_err'] = 'Veuillez entrer votre numero de telephone !';
-            }
-            
-            // On valide l'adresse
-            if ( empty($data['adresse']) ) {
-                $data['adresse_err'] = 'Veuillez entrer votre adresse !';
-            }
-            
-            // On valide le nom d'utilisateur
-            if ( empty($data['username']) ) {
-                $data['username_err'] = 'Veuillez entrer votre nom d\'utilisateur !';
-            }
-            
-            // Validate email
-            if ( empty($data['email']) ) {
-                $data['email_err'] = 'Veuillez entrer votre email !';
-            }
-            // else {
-            //     // Check email
-            //     if ( $this->userModel->getUserByEmail($data['email']) ) {
-            //         $data['email_err'] = 'Votre email est deja attribu� !';
-            //     }
-            // }
-            
-            // Validate Password
-            if ( empty($data['pwd']) ) {
-                $data['pwd_err'] = 'Veuillez entrer votre mot de passe !';
-            } elseif ( strlen($data['pwd']) < 6 ) {
-                $data['pwd_err'] = 'Le mot de passe doit avoir au moins 6 caracteres !';
-            }
-            
-            // Validate Confirm Password
-            if ( empty($data['confirm_pwd']) ) {
-                $data['confirm_pwd_err'] = 'Veuillez confirmer votre mot de passe !';
-            } else if ( $data['pwd'] != $data['confirm_pwd'] ) {
-                $data['confirm_pwd_err'] = 'Le mot de passe ne correspond pas !';
-            }
-            
-            //Make sure errors are empty
-            if ( empty($data['nom_err']) && empty($data['prenom_err']) && empty($data['tel_err']) && empty($data['adresse_err'])
-                && empty($data['username_err']) && empty($data['email_err']) && empty($data['pwd_err']) && empty($data['confirm_pwd_err']) ) {
-                    // Hash Password
-                    $data['pwd'] = password_hash($data['pwd'], PASSWORD_DEFAULT);
-                    
-                    if ( $this->userModel->update($data) ) {
-                        flash('register_success','You are now registered! You !');
-                        redirect('users/profile');
-                    } else {
-                        die ('Something wrong');
-                    }
-                }
-                else
-                {
-                    // Load view with errors
-                    $this->render('users/edit',$data);
-                }
-                
-                
-        }
-        
-        else
-        {
-            $user=$this->userModel->getUserById($id);
-            $data = [
-                'id'=>$user->id_user,
-                'profil_id' => $user->id_profil,
-                'nom_profil' => $user->nom_profil,
-                'nom' => $user->nom,
-                'prenom' => $user->prenom,
-                'tel' => $user->tel,
-                'adresse' => $user->adresse,
-                'username' => $user->username,
-                'email' => $user->email,
-                'pwd' => '',
-                'confirm_pwd' => '',
-                'nom_err' => '',
-                'prenom_err' => '',
-                'tel_err' => '',
-                'adresse_err' => '',
-                'username_err' => '',
-                'email_err' => '',
-                'pwd_err' => '',
-                'confirm_pwd_err' => ''
-            ];
-            $this->render('users/edit',$data);
-        }
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_mail']);
+        unset($_SESSION['user_name']);
+        session_destroy();
+        redirect('users/login');
     }
-    
-    public function profile()
-    {
-        if (!isLoggedIn()) {
-            redirect('users/login') ;
-        }
-        $users= $this->userModel->getUserByProfile($_SESSION['user_id']);
-        $data = [
-            'users' =>$users
-        ];
-        return $this->render('users/profile',$data);
-    }
-    
+
     public function createUserSession($user)
     {
-        $_SESSION['user_id']= $user->id_user;
-        $_SESSION['user_email'] = $user->email;
-        $_SESSION['username'] = $user->username;
-        redirect('home');
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_username'] = $user->username;
+        $_SESSION['user_name'] = $user->name;
+        redirect('posts');
     }
+
+    public function isLoggedIn()
+    {
+        if ( isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && isset($_SESSION['user_username'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function changepwd()
+    {
+        if(!isLoggedIn() ){
+            redirect('users/login');
+        }
+        
+        //Check for POST
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            // Sanitize POST Data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        
+            // Process form
+            $data = [
+                'username' => $_SESSION['user_username'],
+                'pwd_old' => trim($_POST['pwd_old']),
+                'pwd' => trim($_POST['pwd']),
+                'confirm_pwd' => trim($_POST['confirm_pwd']),
+                'pwd_old_err' => '',
+                'pwd_err' => '',
+                'confirm_pwd_err' => ''
+            ];
+
+            // Validate pwd Old
+            if ( empty($data['pwd_old']) ) {
+                $data['pwd_old_err'] = 'Please inform your old pwd';
+            } elseif ( strlen($data['pwd_old']) < 6 ) {
+                $data['pwd_old_err'] = 'pwd old must be at least 6 characters';
+            } else if (! $this->userModel->checkpwd($data['username'], $data['pwd_old']) ) {
+                $data['pwd_old_err'] = 'Your old pwd is wrong!';
+            }
+            
+                // Validate pwd
+            if ( empty($data['pwd']) ) {
+                $data['pwd_err'] = 'Please inform your pwd';
+            } elseif ( strlen($data['pwd']) < 6 ) {
+                $data['pwd_err'] = 'pwd must be at least 6 characters';
+            }
+        
+            // Validate Confirm pwd
+            if ( empty($data['confirm_pwd']) ) {
+                $data['confirm_pwd_err'] = 'Please confirm your pwd';
+            } else if ( $data['pwd'] != $data['confirm_pwd'] ) {
+                $data['confirm_pwd_err'] = 'pwd does not match!';
+            }
+        
+            //Make sure errors are empty
+            if ( empty($data['pwd_old_err']) && empty($data['pwd_err']) && empty($data['confirm_pwd_err']) ) {
+                // Hash pwd
+                $data['pwd'] = pwd_hash($data['pwd'], pwd_DEFAULT);
+                
+                if ( $this->userModel->updatepwd($data) ) {
+                    flash('register_success','pwd updated!');
+                    redirect('posts');
+                } else {
+                    die ('Something wrong');
+                }
+            } else{
+                // Load view with errors
+                $this->render('users/changepwd',$data);
+            }
+        } else {
+            // Init data
+            $data = [
+                'username' => $_SESSION['user_username'],
+                'pwd_old' => '',
+                'pwd' => '',
+                'confirm_pwd' => '',
+                'pwd_old_err' => '',
+                'pwd_err' => '',
+                'confirm_pwd_err' => ''
+            ];
+        
+            // Load view
+            $this->render('users/changepwd', $data);
+        }
+    }
+
+    public function delete($id)
+    {
+        if($_SERVER['REQUEST_METHOD']=='POST') {
+            // Get existing post from model
+            $user = $this->userModel->getUserById($id);
+
+            //Check if the user is logged
+            if( $user->id == $_SESSION['user_id'] ){
+                flash('user_message', 'You cannot delete your own user!');
+                redirect('users');
+            }
+            
+            //Check if the user has posts
+            $row = $this->postModel->getPostByUserId($id);
+            if ($row->total > 0 ) {
+                flash('user_message', 'You cannot delete a user with published posts!');
+                redirect('users');
+            }
+            
+            if( $this->userModel->deleteUser($id) ){
+                flash('user_message', 'The user was removed with success!');
+                redirect('users');
+            } else {
+                flash('user_message', 'An erro ocurred when delete user');
+                redirect('users');
+            }
+        
+        } else {
+            redirect('users');
+        }
+    } //end function
 }
 

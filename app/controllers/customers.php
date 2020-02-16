@@ -1,12 +1,13 @@
 <?php
-namespace controllers;
+
+use php_mvc_tutorial\app\libraries\controller\controller;
 
 /**
  *
  * @author EDGARELDY
  *        
  */
-class customers
+class customers extends controller
 {
 
     /**

@@ -1,12 +1,12 @@
 <?php
-namespace controllers;
+use php_mvc_tutorial\app\libraries\controller\controller;
 
 /**
  *
  * @author EDGARELDY
- *        
+ *
  */
-class categories
+class categories extends controller
 {
 
     /**
@@ -16,7 +16,7 @@ class categories
     {
         $this->marqueModel=$this->model('marque');
     }
-    
+
     public function index()
     {
         if (!isLoggedIn()) {
@@ -28,7 +28,7 @@ class categories
         ];
         return $this->render('marques/index',$data);
     }
-    
+
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -38,7 +38,7 @@ class categories
                 'nom_marque' => trim($_POST['nom_marque']),
                 'nom_marque_err' => ''
             ];
-            
+
             // Validate nom_marque
             if ( empty($data['nom_marque']) ) {
                 $data['nom_marque_err'] = 'Veuillez entrer la marque de voiture !';
@@ -48,10 +48,10 @@ class categories
                     $data['nom_marque_err'] = 'Cette marque existe deja !';
                 }
             }
-            
+
             //Make sure errors are empty
             if ( empty($data['nom_marque_err']) ) {
-                
+
                 if ( $this->marqueModel->add($data) ) {
                     flash('marque_message','La marque de voiture a ete ajoutee avec succes !');
                     redirect('marques');
@@ -64,9 +64,9 @@ class categories
                 // Load view with errors
                 $this->render('marques/add',$data);
             }
-            
+
         }
-        
+
         else
         {
             $data = [
@@ -76,7 +76,7 @@ class categories
             $this->render('marques/add',$data);
         }
     }
-    
+
     public function edit($id)
     {
         if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
@@ -86,12 +86,12 @@ class categories
                 'nom_marque'=>trim($_POST['nom_marque']),
                 'nom_marque_err'=>''
             ];
-            
+
             //Validation du nom de la marque
             if (empty($data['nom_marque'])) {
                 $data['nom_marque_err'] = 'Veuillez entrer la marque de la voiture !'  ;
             }
-            
+
             if (empty($data['nom_marque_err'])) {
                 if ($this->marqueModel->update($data)) {
                     flash('marque_saved', 'La marque a ete mis a jour ')  ;
@@ -100,9 +100,9 @@ class categories
                 else die('Something went wrong !');
             }
             else $this->render('marques/edit',$data);
-            
+
         }
-        
+
         else
         {
             $marque=$this->marqueModel->getMarqueById($id);
@@ -114,7 +114,7 @@ class categories
             $this->render('marques/edit',$data);
         }
     }
-    
+
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
@@ -124,10 +124,9 @@ class categories
             } else {
                 die('Something went wrong');
             }
-            
+
         } else {
             redirect('marques/index');
         }
     } //end function
 }
-

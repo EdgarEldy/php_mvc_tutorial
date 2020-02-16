@@ -1,22 +1,22 @@
 <?php
-namespace controllers;
+use php_mvc_tutorial\app\libraries\controller\controller;
 
 /**
  *
  * @author EDGARELDY
  *        
  */
-class orders
+class orders extends controller
 {
 
     /**
      */
-    protected $modeleModel;
-    protected $marqueModel;
+    protected $customerModel;
+    protected $productModel;
     public function __construct()
     {
-        $this->modeleModel=$this->model('modele');
-        $this->marqueModel=$this->model('marque');
+        $this->customerModel=$this->model('customer');
+        $this->productModel=$this->model('product');
     }
     
     public function index()
@@ -24,42 +24,42 @@ class orders
         if (!isLoggedIn()) {
             redirect('users/login')  ;
         }
-        $modeles=$this->modeleModel->getModeles();
+        $customers=$this->customerModel->getcustomers();
         $data= [
-            'modeles' => $modeles
+            'customers' => $customers
         ];
-        return $this->render('modeles/index',$data);
+        return $this->render('orders/index',$data);
     }
     
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
-            $marque = $this->marqueModel->getMarques();
+            $product = $this->productModel->getproducts();
             //Process form
             $data = [
-                'marque'=>$marque,
-                'marque_id'=>trim($_POST['marque_id']),
-                'nom_modele' => trim($_POST['nom_modele']),
-                'nom_modele_err' => ''
+                'product'=>$product,
+                'product_id'=>trim($_POST['product_id']),
+                'nom_customer' => trim($_POST['nom_customer']),
+                'nom_customer_err' => ''
             ];
             
-            // Validate nom_modele
-            if ( empty($data['nom_modele']) ) {
-                $data['nom_modele_err'] = 'Veuillez entrer le modele de la marque de voiture !';
+            // Validate nom_customer
+            if ( empty($data['nom_customer']) ) {
+                $data['nom_customer_err'] = 'Veuillez entrer le customer de la product de voiture !';
             } else {
-                // Check nom_modele
-                if ( $this->modeleModel->getModeleByName($data['nom_modele']) ) {
-                    $data['nom_modele_err'] = 'Cet modele existe deja !';
+                // Check nom_customer
+                if ( $this->customerModel->getcustomerByName($data['nom_customer']) ) {
+                    $data['nom_customer_err'] = 'Cet customer existe deja !';
                 }
             }
             
             //Make sure errors are empty
-            if ( empty($data['nom_modele_err']) ) {
+            if ( empty($data['nom_customer_err']) ) {
                 
-                if ( $this->modeleModel->add($data) ) {
-                    flash('Enregistrement réussi','La marque de voiture a ete ajoutee !');
-                    redirect('modeles/index');
+                if ( $this->customerModel->add($data) ) {
+                    flash('Enregistrement rï¿½ussi','La product de voiture a ete ajoutee !');
+                    redirect('customers/index');
                 } else {
                     die ('Something wrong');
                 }
@@ -67,21 +67,21 @@ class orders
             else
             {
                 // Load view with errors
-                $this->render('modeles/add',$data);
+                $this->render('customers/add',$data);
             }
             
         }
         
         else
         {
-            $marque=$this->marqueModel->getMarques();
+            $product=$this->productModel->getproducts();
             $data = [
-                'marque'=>$marque,
-                'marque_id'=>'',
-                'nom_modele' => '',
-                'nom_modele_err' => ''
+                'product'=>$product,
+                'product_id'=>'',
+                'nom_customer' => '',
+                'nom_customer_err' => ''
             ];
-            $this->render('modeles/add',$data);
+            $this->render('customers/add',$data);
         }
     }
     
@@ -89,60 +89,60 @@ class orders
     {
         if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
-            $marque = $this->marqueModel->getMarques();
+            $product = $this->productModel->getproducts();
             
             $data=[
                 'id' => $id,
-                'marque'=>$marque,
-                'marque_id'=>trim($_POST['marque_id']),
-                'nom_modele'=>trim($_POST['nom_modele']),
-                'nom_modele_err'=>''
+                'product'=>$product,
+                'product_id'=>trim($_POST['product_id']),
+                'nom_customer'=>trim($_POST['nom_customer']),
+                'nom_customer_err'=>''
             ];
             
             //Validation
-            if (empty($data['nom_modele'])) {
-                $data['nom_modele_err'] = 'Veuillez entrer la marque de la voiture !'  ;
+            if (empty($data['nom_customer'])) {
+                $data['nom_customer_err'] = 'Veuillez entrer la product de la voiture !'  ;
             }
             
-            if (empty($data['nom_modele_err'])) {
-                if ($this->modeleModel->update($data)) {
-                    flash('Mise a jour reussi', 'La marque a ete mis a jour ')  ;
-                    redirect('modeles/index');
+            if (empty($data['nom_customer_err'])) {
+                if ($this->customerModel->update($data)) {
+                    flash('Mise a jour reussi', 'La product a ete mis a jour ')  ;
+                    redirect('customers/index');
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('modeles/edit',$data);
+            else $this->render('customers/edit',$data);
             
         }
         
         else
         {
-            $modele=$this->modeleModel->getModeleById($id);
-            $marque = $this->marqueModel->getMarques();
+            $customer=$this->customerModel->getcustomerById($id);
+            $product = $this->productModel->getproducts();
             
             $data=[
-                'id'=>$modele->id_modele,
-                'marque'=>$marque,
-                'marque_id'=>'',
-                'nom_modele'=> $modele->nom_modele,
-                'nom_modele_err'=>''
+                'id'=>$customer->id_customer,
+                'product'=>$product,
+                'product_id'=>'',
+                'nom_customer'=> $customer->nom_customer,
+                'nom_customer_err'=>''
             ];
-            $this->render('modeles/edit',$data);
+            $this->render('customers/edit',$data);
         }
     }
     
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->modeleModel->delete($id) ){
+            if( $this->customerModel->delete($id) ){
                 flash('Suppression reussi', 'Post removed');
-                redirect('modeles/index');
+                redirect('customers/index');
             } else {
                 die('Something went wrong');
             }
             
         } else {
-            redirect('modeles/index');
+            redirect('customers/index');
         }
     } //end function
 }
