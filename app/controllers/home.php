@@ -16,11 +16,12 @@ class home extends controller
     
     public function index()
     {
-        if (!isLoggedIn()) {
+        /* if (!isLoggedIn()) {
             redirect('users/login') ;
-        }
+        } */
         
-        else return $this->home_view('home/index');
+        //else 
+            return $this->render('home/index');
     }
 }
 
