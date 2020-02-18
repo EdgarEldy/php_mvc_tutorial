@@ -1,65 +1,38 @@
-<script language="javascript">  
-  function imprimer_bloc(Report, objet) {  
-  // D�finition de la zone � imprimer  
-  var zone = document.getElementById(objet).innerHTML;   
-  // Ouverture du popup  
-  var fen = window.open("", "", "height=800, width=1000,toolbar=0, menubar=0, scrollbars=1,resizable=1,status=0, location=0, left=10, top=10");   
-  // style du popup  
-  fen.document.body.style.color = '#000000';  
-  fen.document.body.style.backgroundColor = '#FFFFFF'; 
-  fen.document.body.style.padding = "20px";   
-  // Ajout des donn�es a imprimer 
-  fen.document.title = Report;  
-  fen.document.body.innerHTML += " " + zone + " ";    
-  // Impression du popup  
-  fen.window.print();   
-  //Fermeture du popup  
-  fen.window.close();  
-  return true;  
-  }  </script>
-    <SCRIPT LANGUAGE="JavaScript">
-//D'autres scripts sur http://www.toutjavascript.com
-//Si vous utilisez ce script, merci de m'avertir !  < webmaster@toutjavascript.com >
-function PopupCentrer(page,largeur,hauteur,options) {
-  var top=(screen.height-hauteur)/2;
-  var left=(screen.width-largeur)/2;
-  window.open(page,"","top="+top+",left="+left+",width="+largeur+",height="+hauteur+","+options);
-}
-</SCRIPT>   
-      <div class="col-lg-12">
+ <div class="col-lg-12">
         <div class="panel panel-default">
-          <div class="panel-heading">Gestion des utilisateurs</div>
+          <div class="panel-heading">orders</div>
           <div class="panel-body">
-            <a href='javascript:PopupCentrer("<?php echo URL_ROOT;?>/users/register",500,750,"menubar=no,scrollbars=no,statusbar=no")' 
-            class="btn btn-primary">Nouveau</a>
-            <div id="imprime_moi">
-              <table data-toggle="table" data-url=""  data-show-refresh="true" data-show-toggle="true" 
+            <a href="<?= URL_ROOT;?>/orders/add"
+            class="btn btn-primary">New</a>
+            <table data-toggle="table" data-url=""  data-show-refresh="true" data-show-toggle="true" 
               data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" 
               data-sort-name="name" data-sort-order="desc">
               <thead>
                                         <tr>
-                                            <th>Nom</th>
-                                            <th>Prenom</th>
-                                            <th>Nom d'utilisateur</th>
-                                            <th>Email</th>
-                                            <th>Date enregistre</th>
+                                            <th>ID</th>
+                                            <th>Customer name</th>
+                                            <th>product name</th>
+                                            <th>Unit price</th>
+                                            <th>qty</th>
+                                            <th>Total</th>
                                             <th>Options</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($data['users'] as $user) :?>
+                                    <?php foreach ($data['orders'] as $order) :?>
                                         <tr>
-                                            <td><?= $user->nom; ?> </td>
-                                            <td><?= $user->prenom; ?></td>
-                                            <td><?= $user->username; ?></td>
-                                            <td><?= $user->email; ?></td>
-                                            <td><?= $user->date_registered; ?></td>
+                                            <td><?= $order->order_id; ?> </td>
+                                            <td><?= $order->name; ?></td>
+                                            <td><?= $order->product_name; ?></td>
+                                            <td><?= $order->unit_price; ?></td>
+                                            <td><?= $order->qty; ?></td>
+                                            <td><?= $order->total; ?></td>
                                             <td>
                                             <div class="card-footer">
-                                            <a href='javascript:PopupCentrer("<?php echo URL_ROOT;?>/users/edit/<?= $user->id_user; ?>",500,750,"menubar=no,scrollbars=no,statusbar=no")' 
-            								class="btn btn-primary">Modifier</a>
-                                            <form action="<?= URL_ROOT;?>/users/delete/<?= $user->id_user; ?>" method="post">
-                                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                            <a href="<?= URL_ROOT;?>/orders/edit/<?= $order->order_id?>"
+                                            class="btn btn-primary">Edit</a>
+                                            <form action="<?= URL_ROOT;?>/orders/delete/<?= $order->order_id; ?>" method="post">
+                                            <button type="submit" onclick="return confirm('Are you sure you want to delete this order ?')" class="btn btn-danger btn-sm">Delete</button>
                                             </form>
                                             
                                             </div>
@@ -68,9 +41,6 @@ function PopupCentrer(page,largeur,hauteur,options) {
                                         <?php endforeach;?>
                                     </tbody>
               </table>
-            </div>
-            <input type="submit" name="report" value="Imprimer" class="btn btn-primary" 
-    onclick="javascript:imprimer_bloc('Report', 'imprime_moi');"/>
           </div>
         </div>
       </div>
