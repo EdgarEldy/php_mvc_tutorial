@@ -63,7 +63,7 @@ class user
 
     public function login($username,$pwd)
     {
-        $this->db->query('SELECT profile.fk_profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
+        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
         from profile,user where profile.profile_id=user.fk_profile_id and user.username = :username');
         $this->db->bind(':username', $username);
         $row =$this->db->single();
@@ -111,7 +111,7 @@ class user
 
     public function getUserByprofile($id)
     {
-        $this->db->query('SELECT profile.fk_profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
+        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
         from profile,user where profile.profile_id=user.fk_profile_id and user.user_id = :id');
         $this->db->bind(':id', $id);
         return $this->db->resultSet();
@@ -119,8 +119,8 @@ class user
 
     public function getUsers()
     {
-        $this->db->query('SELECT profile.fk_profile_id,profile.profile_name,user.user_id,user.fk_profile_id,
-		user.username,user.email, DATE_FORMAT(user.created_at,"%d/%m/%Y") as created_at from profile,user WHERE
+        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username, 
+            DATE_FORMAT(user.created_at,"%d/%m/%Y") as created_at from profile,user WHERE
 		profile.profile_id=user.fk_profile_id');
         return $this->db->resultSet();
 

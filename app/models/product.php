@@ -83,7 +83,7 @@ class product
     }
 
     public function getProductsByCatId()
- {
+    {
         if (isset($_GET['q'])) {
             $q=intval($_GET['q']);
          $this->db->query('SELECT category.cat_id,category.cat_name,product.product_id,product.fk_cat_id,
@@ -92,5 +92,18 @@ class product
         return $this->db->resultSet();
         }
 
+    }
+
+    public function getUnitPriceByProductId()
+    {
+        # code...
+        if (isset($_GET['q'])) {
+            # code...
+            $q = intval($_GET['q']);
+            $this->db->query('SELECT category.cat_id,category.cat_name,product.product_id,product.fk_cat_id,
+        product.product_name,product.unit_price FROM category,product WHERE category.cat_id=product.fk_cat_id AND product.product_id=:q');
+            $this->db->bind(':q', $q);
+            return $this->db->resultSet();
+        }
     }
 }
