@@ -11,55 +11,110 @@ class orders extends controller
 
     /**
      */
-    protected $customerModel;
-    protected $productModel;
+    protected $customerModel,$categoryModel,$productModel,$orderModel;
     public function __construct()
     {
         $this->customerModel=$this->model('customer');
+        $this->categoryModel=$this->model('category');
         $this->productModel=$this->model('product');
+        $this->orderModel=$this->model('order');
     }
     
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login')  ;
-        }
-        $customers=$this->customerModel->getcustomers();
-        $data= [
-            'customers' => $customers
-        ];
-        return $this->render('orders/index',$data);
+        // if (!isLoggedIn()) {
+        //     # code...
+        //   redirect('users/login');
+        // }
+            $orders=$this->orderModel->getOrders();
+            $data=[
+                'orders' => $orders
+            ];
+            $this->render('orders/index',$data);
+        
     }
+
+    public function getProducts()
+    {
+        # code...
+        $products = $this->productModel->getProductsByCatId();
+        $data = [
+            'products' => $products
+        ];
+        return $this->render('orders/getProducts', $data);
+    }
+
+    public function getUnitPrice()
+        {
+            $unit_price=$this->productModel->getUnitPriceByProductId();
+            $data= [
+                'unit_price' => $unit_price
+            ];
+            return $this->render('orders/getUnitPrice', $data);
+        }
     
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
-            $product = $this->productModel->getproducts();
+            $customers = $this->customerModel->getCustomers();
+            $categories = $this->categoryModel->getCategories();
+            $products = $this->productModel->getProducts();
             //Process form
             $data = [
-                'product'=>$product,
-                'product_id'=>trim($_POST['product_id']),
-                'nom_customer' => trim($_POST['nom_customer']),
-                'nom_customer_err' => ''
+                'customers'=>$customers,
+                'categories'=>$categories,
+                'products'=>$products,
+                'fk_customer_id'=>trim($_POST['fk_customer_id']),
+                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'fk_product_id'=>trim($_POST['fk_product_id']),
+                'unit_price' => trim($_POST['unit_price']),
+                'qty' => trim($_POST['qty']),
+                'total' => trim($_POST['total']),
+                'fk_customer_id_err' => '',
+                'fk_cat_id_err' => '',
+                'fk_product_id_err' => '',
+                'unit_price_err' => '',
+                'qty_err' => '',
+                'total_err' => ''
             ];
             
-            // Validate nom_customer
-            if ( empty($data['nom_customer']) ) {
-                $data['nom_customer_err'] = 'Veuillez entrer le customer de la product de voiture !';
-            } else {
-                // Check nom_customer
-                if ( $this->customerModel->getcustomerByName($data['nom_customer']) ) {
-                    $data['nom_customer_err'] = 'Cet customer existe deja !';
-                }
+            // Validate customer id
+            if (empty($data['fk_customer_id'])) {
+               $data['fk_customer_id_err'] = 'Please select customer name' ;
+            }
+
+            // Validate category name
+            if ( empty($data['fk_cat_id']) ) {
+                $data['fk_cat_id_err'] = 'Please select category name !';
             }
             
+            // Validate product name
+            if ( empty($data['fk_product_id']) ) {
+                $data['fk_product_id_err'] = 'Please select product name !';
+            }
+
+            // Validate unit price
+            if ( empty($data['unit_price']) ) {
+                $data['unit_price_err'] = 'Please enter the unit price !';
+            }
+
+            // Validate qty
+            if ( empty($data['qty']) ) {
+                $data['qty_err'] = 'Please enter the qty !';
+            }
+
+            // Validate total
+            if ( empty($data['total']) ) {
+                $data['total_err'] = 'Please enter total !';
+            }
+
             //Make sure errors are empty
-            if ( empty($data['nom_customer_err']) ) {
+            if ( empty($data['fk_customer_id_err']) && empty($data['fk_cat_id_err']) && empty($data['fk_product_id_err']) && empty($data['unit_price_err']) 
+             && empty($data['qty_err']) && empty($data['total_err']) ) {
                 
-                if ( $this->customerModel->add($data) ) {
-                    flash('Enregistrement r�ussi','La product de voiture a ete ajoutee !');
-                    redirect('customers/index');
+                if ( $this->orderModel->add($data) ) {
+                    redirect('orders');
                 } else {
                     die ('Something wrong');
                 }
@@ -67,82 +122,146 @@ class orders extends controller
             else
             {
                 // Load view with errors
-                $this->render('customers/add',$data);
+                $this->render('orders/add',$data);
             }
             
         }
         
         else
         {
-            $product=$this->productModel->getproducts();
+            $customers = $this->customerModel->getCustomers();
+            $categories = $this->categoryModel->getCategories();
+            $products = $this->productModel->getProducts();
             $data = [
-                'product'=>$product,
-                'product_id'=>'',
-                'nom_customer' => '',
-                'nom_customer_err' => ''
+                'customers'=>$customers,
+                'categories'=>$categories,
+                'products'=>$products,
+                'fk_customer_id'=> '',
+                'fk_cat_id'=>'',
+                'fk_product_id'=>'',
+                'unit_price' => '',
+                'qty' => '',
+                'total' => '',
+                'fk_customer_id_err' => '',
+                'fk_cat_id_err' => '',
+                'fk_product_id_err' => '',
+                'unit_price_err' => '',
+                'qty_err' => '',
+                'total_err' => ''
             ];
-            $this->render('customers/add',$data);
+            $this->render('orders/add',$data);
         }
     }
     
     public function edit($id)
     {
-        if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
-            $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
-            $product = $this->productModel->getproducts();
-            
-            $data=[
-                'id' => $id,
-                'product'=>$product,
-                'product_id'=>trim($_POST['product_id']),
-                'nom_customer'=>trim($_POST['nom_customer']),
-                'nom_customer_err'=>''
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
+            $customers = $this->customerModel->getCustomers();
+            $categories = $this->categoryModel->getCategories();
+            $products = $this->productModel->getProducts();
+            //Process form
+            $data = [
+                'customers'=>$customers,
+                'categories'=>$categories,
+                'products'=>$products,
+                'fk_customer_id'=>trim($_POST['fk_customer_id']),
+                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'fk_product_id'=>trim($_POST['fk_product_id']),
+                'unit_price' => trim($_POST['unit_price']),
+                'qty' => trim($_POST['qty']),
+                'total' => trim($_POST['total']),
+                'fk_customer_id_err' => '',
+                'fk_cat_id_err' => '',
+                'fk_product_id_err' => '',
+                'unit_price_err' => '',
+                'qty_err' => '',
+                'total_err' => ''
             ];
             
-            //Validation
-            if (empty($data['nom_customer'])) {
-                $data['nom_customer_err'] = 'Veuillez entrer la product de la voiture !'  ;
+            // Validate customer id
+            if (empty($data['fk_customer_id'])) {
+               $data['fk_customer_id_err'] = 'Please select customer name' ;
+            }
+
+            // Validate category name
+            if ( empty($data['fk_cat_id']) ) {
+                $data['fk_cat_id_err'] = 'Please select category name !';
             }
             
-            if (empty($data['nom_customer_err'])) {
-                if ($this->customerModel->update($data)) {
-                    flash('Mise a jour reussi', 'La product a ete mis a jour ')  ;
-                    redirect('customers/index');
+            // Validate product name
+            if ( empty($data['fk_product_id']) ) {
+                $data['fk_product_id_err'] = 'Please select product name !';
+            }
+
+            // Validate unit price
+            if ( empty($data['unit_price']) ) {
+                $data['unit_price_err'] = 'Please enter the unit price !';
+            }
+
+            // Validate qty
+            if ( empty($data['qty']) ) {
+                $data['qty_err'] = 'Please enter the qty !';
+            }
+
+            // Validate total
+            if ( empty($data['total']) ) {
+                $data['total_err'] = 'Please enter total !';
+            }
+
+            //Make sure errors are empty
+            if ( empty($data['fk_customer_id_err']) && empty($data['fk_cat_id_err']) && empty($data['fk_product_id_err']) && empty($data['unit_price_err']) 
+             && empty($data['qty_err']) && empty($data['total_err']) ) {
+                if ($this->orderModel->update($data)) {
+                    redirect('orders/index');
+
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('customers/edit',$data);
+            else $this->render('orders/edit',$data);
             
         }
         
         else
         {
-            $customer=$this->customerModel->getcustomerById($id);
-            $product = $this->productModel->getproducts();
-            
+            $customers = $this->customerModel->getCustomers();
+            $categories = $this->categoryModel->getCategories();
+            $products = $this->productModel->getProducts();
+            $order = $this->orderModel->getOrderById($id);
             $data=[
-                'id'=>$customer->id_customer,
-                'product'=>$product,
-                'product_id'=>'',
-                'nom_customer'=> $customer->nom_customer,
-                'nom_customer_err'=>''
+                'id' => $order->order_id,
+                'customers'=>$customers,
+                'categories'=>$categories,
+                'products'=>$products,
+                'fk_customer_id'=>'',
+                'fk_product_id'=>'',
+                'fk_cat_id'=>'',
+                'unit_price' => $order->unit_price,
+                'qty' => $order->qty,
+                'total' => $order->total,
+                'fk_customer_id_err' => '',
+                'fk_cat_id_err' => '',
+                'fk_product_id_err' => '',
+                'unit_price_err' => '',
+                'qty_err' => '',
+                'total_err' => ''
             ];
-            $this->render('customers/edit',$data);
+            $this->render('orders/edit',$data);
         }
     }
     
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->customerModel->delete($id) ){
+            if( $this->orderModel->delete($id) ){
                 flash('Suppression reussi', 'Post removed');
-                redirect('customers/index');
+                redirect('orders');
             } else {
                 die('Something went wrong');
             }
             
         } else {
-            redirect('customers/index');
+            redirect('orders');
         }
     } //end function
 }

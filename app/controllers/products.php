@@ -4,62 +4,77 @@ use php_mvc_tutorial\app\libraries\controller\controller;
 /**
  *
  * @author EDGARELDY
- *        
+ *
  */
 class products extends controller
 {
 
     /**
      */
-    protected $modeleModel;
-    protected $marqueModel;
+    protected $categoryModel;
+    protected $productModel;
     public function __construct()
     {
-        $this->modeleModel=$this->model('modele');
-        $this->marqueModel=$this->model('marque');
+        $this->categoryModel=$this->model('category');
+        $this->productModel=$this->model('product');
     }
-    
+
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login')  ;
-        }
-        $modeles=$this->modeleModel->getModeles();
+        // if (!isLoggedIn()) {
+        //     redirect('users/login')  ;
+        // }
+        $products=$this->productModel->getProducts();
         $data= [
-            'modeles' => $modeles
+            'products' => $products
         ];
-        return $this->render('modeles/index',$data);
+        return $this->render('products/index',$data);
     }
-    
+
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
-            $marque = $this->marqueModel->getMarques();
+            $category = $this->categoryModel->getCategories();
             //Process form
             $data = [
-                'marque'=>$marque,
-                'marque_id'=>trim($_POST['marque_id']),
-                'nom_modele' => trim($_POST['nom_modele']),
-                'nom_modele_err' => ''
+                'category'=>$category,
+                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'product_name' => trim($_POST['product_name']),
+                'unit_price' => trim($_POST['unit_price']),
+                'product_name_err' => '',
+                'unit_price_err' => ''
             ];
-            
-            // Validate nom_modele
-            if ( empty($data['nom_modele']) ) {
-                $data['nom_modele_err'] = 'Veuillez entrer le modele de la marque de voiture !';
+
+            //Validate category id
+
+            if (empty($data['fk_cat_id'])) {
+                # code...
+                $data['fk_cat_id_err'] = 'Please select the category';
+            }
+
+            // Validate product name
+            if ( empty($data['product_name']) ) {
+                $data['product_name_err'] = 'Please enter product name !';
             } else {
-                // Check nom_modele
-                if ( $this->modeleModel->getModeleByName($data['nom_modele']) ) {
-                    $data['nom_modele_err'] = 'Cet modele existe deja !';
+                // Check product name
+                if ( $this->productModel->getProductByName($data['product_name']) ) {
+                    $data['product_name_err'] = 'This product already exists !';
                 }
             }
             
+            //Validate unit price
+            if (empty($data['unit_price'])) {
+                # code...
+                $data['unit_price_err'] = 'Please enter unit price !';
+
+            }
+
             //Make sure errors are empty
-            if ( empty($data['nom_modele_err']) ) {
-                
-                if ( $this->modeleModel->add($data) ) {
-                    flash('Enregistrement réussi','La marque de voiture a ete ajoutee !');
-                    redirect('modeles/index');
+            if ( empty($data['fk_cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
+
+                if ( $this->productModel->add($data) ) {
+                    redirect('products');
                 } else {
                     die ('Something wrong');
                 }
@@ -67,83 +82,107 @@ class products extends controller
             else
             {
                 // Load view with errors
-                $this->render('modeles/add',$data);
+                $this->render('products/add',$data);
             }
-            
+
         }
-        
+
         else
         {
-            $marque=$this->marqueModel->getMarques();
+            $categories=$this->categoryModel->getCategories();
             $data = [
-                'marque'=>$marque,
-                'marque_id'=>'',
-                'nom_modele' => '',
-                'nom_modele_err' => ''
+                'categories'=>$categories,
+                'fk_cat_id'=>'',
+                'product_name' => '',
+                'unit_price' => '',
+                'fk_cat_id_err' => '',
+                'product_name_err' => '',
+                'unit_price_err' => ''
             ];
-            $this->render('modeles/add',$data);
+            $this->render('products/add',$data);
         }
     }
-    
+
     public function edit($id)
     {
         if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
-            $marque = $this->marqueModel->getMarques();
-            
+            $categories = $this->categoryModel->getCategories();
+
             $data=[
                 'id' => $id,
-                'marque'=>$marque,
-                'marque_id'=>trim($_POST['marque_id']),
-                'nom_modele'=>trim($_POST['nom_modele']),
-                'nom_modele_err'=>''
+                'categories'=>$categories,
+                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'product_name'=>trim($_POST['product_name']),
+                'unit_price'=>trim($_POST['unit_price']),
+                'product_name_err'=>'',
+                'unit_price_err'=>''
             ];
-            
-            //Validation
-            if (empty($data['nom_modele'])) {
-                $data['nom_modele_err'] = 'Veuillez entrer la marque de la voiture !'  ;
+
+            //Validate category id
+
+            if (empty($data['fk_cat_id'])) {
+                # code...
+                $data['fk_cat_id_err'] = 'Please select the category';
+            }
+
+            // Validate product name
+            if ( empty($data['product_name']) ) {
+                $data['product_name_err'] = 'Please enter product name !';
+            } else {
+                // Check product name
+                if ( $this->productModel->getProductByName($data['product_name']) ) {
+                    $data['product_name_err'] = 'This product already exists !';
+                }
             }
             
-            if (empty($data['nom_modele_err'])) {
-                if ($this->modeleModel->update($data)) {
-                    flash('Mise a jour reussi', 'La marque a ete mis a jour ')  ;
-                    redirect('modeles/index');
+            //Validate unit price
+            if (empty($data['unit_price'])) {
+                # code...
+                $data['unit_price_err'] = 'Please enter unit price !';
+
+            }
+
+            if ( empty($data['fk_cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
+                if ($this->productModel->update($data)) {
+                    redirect('products');
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('modeles/edit',$data);
-            
+            else $this->render('products/edit',$data);
+
         }
-        
+
         else
-        {
-            $modele=$this->modeleModel->getModeleById($id);
-            $marque = $this->marqueModel->getMarques();
-            
+        {   
+            $categories = $this->categoryModel->getCategories();
+            $product=$this->productModel->getProductById($id);
+
             $data=[
-                'id'=>$modele->id_modele,
-                'marque'=>$marque,
-                'marque_id'=>'',
-                'nom_modele'=> $modele->nom_modele,
-                'nom_modele_err'=>''
+                'id'=>$product->product_id,
+                'categories'=>$categories,
+                'fk_cat_id'=>$product->fk_cat_id,
+                'product_name'=> $product->product_name,
+                'unit_price'=> $product->unit_price,
+                'fk_cat_id_err' => '',
+                'product_name_err' => '',
+                'unit_price_err' => ''
             ];
-            $this->render('modeles/edit',$data);
+            $this->render('products/edit',$data);
         }
     }
-    
+
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
-            if( $this->modeleModel->delete($id) ){
-                flash('Suppression reussi', 'Post removed');
-                redirect('modeles/index');
+            if( $this->productModel->delete($id) ){
+                redirect('products');
             } else {
                 die('Something went wrong');
             }
-            
+
         } else {
-            redirect('modeles/index');
+            redirect('products');
         }
     } //end function
 }
-

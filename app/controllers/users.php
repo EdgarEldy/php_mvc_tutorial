@@ -14,20 +14,32 @@ class users extends controller
     protected $profileModel,$userModel;
     public function __construct()
     {
-      $this->userModel = $this->model('User');
+      $this->userModel = $this->model('user');
       $this->profileModel = $this->model('profile');
     }
     
     public function index()
     {
-        if(!isLoggedIn() ){
-            redirect('users/login');
-        }
+        // if(!isLoggedIn() ){
+        //     redirect('users/login');
+        // }
         $users = $this->userModel->getUsers();
         $data = [
             'users' => $users
         ];
-        return $this->view('users/index', $data);
+        return $this->render('users/index', $data);
+    }
+
+     public function profile()
+    {
+//         if (!isLoggedIn()) {
+//             redirect('users/login') ;
+//         }
+        $users= $this->userModel->getUserByProfile($_SESSION['user_id']);
+        $data = [
+            'users' =>$users
+        ];
+        return $this->render('users/profile',$data);
     }
 
     public function add()
@@ -40,7 +52,7 @@ class users extends controller
 
             // Process form
             $data = [
-            'profile' => $profile,
+            'profiles' => $profile,
             'fk_profile_id' => trim($_POST['fk_profile_id']),
             'username' => trim($_POST['username']),
             'pwd' => trim($_POST['pwd']),
@@ -99,7 +111,7 @@ class users extends controller
             // Init data
             $profile =$this->profileModel->getProfiles();
             $data = [
-                'profile' => $profile,
+                'profiles' => $profile,
                 'fk_profile_id_err' => '',
                 'username' => '',
                 'pwd' => '',
@@ -111,6 +123,99 @@ class users extends controller
 
             // Load view
             $this->render('users/add', $data);
+        }
+    }
+
+    public function edit($id)
+    {
+        //Check for POST
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            // Sanitize POST Data
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $profile = $this->profileModel->getprofiles();
+
+            // Process form
+            $data = [
+            'profiles' => $profile,
+            'fk_profile_id' => trim($_POST['fk_profile_id']),
+            'username' => trim($_POST['username']),
+            'pwd' => trim($_POST['pwd']),
+            'confirm_pwd' => trim($_POST['confirm_pwd']),
+            'fk_profile_id_err' => '',
+            'username_err' => '',
+            'pwd_err' => '',
+            'confirm_pwd_err' => ''
+            ];
+
+            //Validate profile
+            if ( empty($data['fk_profile_id']) ) {
+                $data['fk_profile_id_err'] = 'Please select profile name !';
+            }
+
+            // Validate username
+            if ( empty($data['username']) ) {
+                $data['username_err'] = 'Please inform your username';
+            } else {
+                // Check username
+                if ( $this->userModel->getUserByUsername($data['username']) ) {
+                    $data['username_err'] = 'username is already in use. Choose another one!';
+                }
+            }
+
+             // Validate pwd
+             if ( empty($data['pwd']) ) {
+                $data['pwd_err'] = 'Please inform your pwd';
+             } elseif ( strlen($data['pwd']) < 6 ) {
+                $data['pwd_err'] = 'pwd must be at least 6 characters';
+             }
+
+             // Validate Confirm pwd
+             if ( empty($data['confirm_pwd']) ) {
+                 $data['confirm_pwd_err'] = 'Please inform your pwd';
+             } else if ( $data['pwd'] != $data['confirm_pwd'] ) {
+                 $data['confirm_pwd_err'] = 'pwd does not match!';
+             }
+
+             //Make sure errors are empty
+             if ( empty($data['fk_profile_id_err']) && empty($data['username_err']) && empty($data['pwd_err']) && empty($data['confirm_pwd_err']) ) {
+                    // Hash Password
+                    $data['pwd'] = password_hash($data['pwd'], PASSWORD_DEFAULT);
+                    
+                    if ( $this->userModel->update($data) ) {
+                        flash('register_success','You are now registered! You !');
+                        //redirect('users/index');
+                        $this->render('users/edit',$data);
+                    } else {
+                        die ('Something wrong');
+                    }
+                }
+                else
+                {
+                    // Load view with errors
+                    $this->render('users/edit',$data);
+                }
+                
+                
+        }
+        
+        else
+        {
+            $profile =$this->profileModel->getProfiles();
+            $user=$this->userModel->getUserById($id);
+            $data = [
+                'id'=>$user->user_id,
+                'profiles' => $profile,
+                'fk_profile_id' => $user->fk_profile_id,
+                'username' => $user->username,
+                'pwd' => '',
+                'confirm_pwd' => '',
+                'fk_profile_id_err' => '',
+                'name_err' => '',
+                'username_err' => '',
+                'pwd_err' => '',
+                'confirm_pwd_err' => ''
+            ];
+            $this->render('users/edit',$data);
         }
     }
 
@@ -189,9 +294,8 @@ class users extends controller
     public function createUserSession($user)
     {
         $_SESSION['user_id'] = $user->id;
-        $_SESSION['user_username'] = $user->username;
-        $_SESSION['user_name'] = $user->name;
-        redirect('posts');
+        $_SESSION['username'] = $user->username;
+        redirect('home');
     }
 
     public function isLoggedIn()

@@ -19,9 +19,9 @@ class profiles extends controller
     
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login')  ;
-        }
+        // if (!isLoggedIn()) {
+        //     redirect('users/login')  ;
+        // }
         $profiles=$this->profileModel->getprofiles();
         $data= [
             'profiles' => $profiles

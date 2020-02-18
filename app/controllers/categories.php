@@ -20,9 +20,9 @@ class categories extends controller
     //Call the view : categories/index
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login')  ;
-        }
+        // if (!isLoggedIn()) {
+        //     redirect('users/login')  ;
+        // }
         $categories=$this->categoryModel->getCategories();
         $data= [
             'categories' => $categories

@@ -20,9 +20,9 @@ class customers extends controller
     
     public function index()
     {
-        if (!isLoggedIn()) {
-            redirect('users/login') ;
-        }
+        // if (!isLoggedIn()) {
+        //     redirect('users/login') ;
+        // }
         $customers= $this->customerModel->getcustomers();
         $data=[
             'customers' => $customers
@@ -38,7 +38,7 @@ class customers extends controller
             $data = [
                 'name' => trim($_POST['name']),
                 'tel' => trim($_POST['tel']),
-                'address' => trim($_POST['address'])
+                'address' => trim($_POST['address']),
                 'name_err' => '',
                 'tel_err' => '',
                 'address_err' => ''
@@ -62,7 +62,7 @@ class customers extends controller
             if ( empty($data['name_err']) && empty($data['tel_err']) && empty($data['address_err']) ) {
                     if ( $this->customerModel->add($data) ) {
                         flash('register_success','You are now registered !');
-                        redirect('customers/index');
+                        redirect('customers');
                     } else {
                         die ('Something wrong');
                     }
@@ -97,7 +97,7 @@ class customers extends controller
                 'id' => $id,
                 'name' => trim($_POST['name']),
                 'tel' => trim($_POST['tel']),
-                'address' => trim($_POST['address'])
+                'address' => trim($_POST['address']),
                 'name_err' => '',
                 'tel_err' => '',
                 'address_err' => ''
@@ -107,26 +107,18 @@ class customers extends controller
             if ( empty($data['name']) ) {
                 $data['name_err'] = 'Veuillez entrer votre name !';
             }
-            }
-            
             // On valide le name d'utilisateur
             if ( empty($data['tel']) ) {
                 $data['tel_err'] = 'Veuillez entrer votre numero de telephone !';
             }
-            }
-            
             // Validate address
             if ( empty($data['address']) ) {
                 $data['address_err'] = 'Veuillez entrer l\'address !';
             }
-            }
-            
             //Make sure errors are empty
-            if ( empty($data['name_err']) && empty($data['tel_err'])
-                && empty($data['address_err']) ) {
+            if ( empty($data['name_err']) && empty($data['tel_err']) && empty($data['address_err']) ) {
                     if ( $this->customerModel->update($data) ) {
-                        flash('register_success','You are now registered! You !');
-                        redirect('customers/index');
+                        redirect('customers');
                     } else {
                         die ('Something wrong');
                     }
@@ -158,14 +150,13 @@ class customers extends controller
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
             if( $this->customerModel->delete($id) ){
-                flash('Suppression reussi', 'customer removed');
-                redirect('customers/index');
+                redirect('customers');
             } else {
                 die('Something went wrong');
             }
             
         } else {
-            redirect('customers/index');
+            redirect('customers');
         }
     }
 }
