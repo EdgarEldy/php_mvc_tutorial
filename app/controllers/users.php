@@ -20,9 +20,6 @@ class users extends controller
     
     public function index()
     {
-        // if(!isLoggedIn() ){
-        //     redirect('users/login');
-        // }
         $users = $this->userModel->getUsers();
         $data = [
             'users' => $users
@@ -32,9 +29,6 @@ class users extends controller
 
      public function profile()
     {
-//         if (!isLoggedIn()) {
-//             redirect('users/login') ;
-//         }
         $users= $this->userModel->getUserByProfile($_SESSION['user_id']);
         $data = [
             'users' =>$users
