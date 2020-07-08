@@ -31,8 +31,8 @@ class category
 
     public function update($data)
     {
-        $this->db->query('UPDATE categories SET cat_name = :cat_name WHERE cat_id=:cat_id');
-        $this->db->bind(':cat_id', $data['id']);
+        $this->db->query('UPDATE categories SET cat_name = :cat_name WHERE id=:id');
+        $this->db->bind(':id', $data['id']);
         $this->db->bind(':cat_name', $data['cat_name']);
         if ($this->db->execute()) {
            return TRUE ;
@@ -42,7 +42,7 @@ class category
 
     public function delete($id)
     {
-        $this->db->query('DELETE FROM categories WHERE cat_id = :id');
+        $this->db->query('DELETE FROM categories WHERE id = :id');
         // Bind values
         $this->db->bind(':id', $id);
 
@@ -56,7 +56,7 @@ class category
 
     public function getCategoryById($id)
     {
-        $this->db->query('SELECT * FROM categories WHERE cat_id =:id');
+        $this->db->query('SELECT * FROM categories WHERE id =:id');
         $this->db->bind(':id', $id);
        return $this->db->single();
     }
