@@ -36,21 +36,35 @@ class customers extends controller
             $_POST=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING)  ;
             //Process form
             $data = [
-                'name' => trim($_POST['name']),
+                'first_name' => trim($_POST['first_name']),
+                'last_name' => trim($_POST['last_name']),
                 'tel' => trim($_POST['tel']),
+                'email' => trim($_POST['email']),
                 'address' => trim($_POST['address']),
-                'name_err' => '',
+                'first_name_err' => '',
+                'last_name_err' => '',
                 'tel_err' => '',
+                'email_err' => '',
                 'address_err' => ''
             ];
             // Validate the name
-            if ( empty($data['name']) ) {
-                $data['name_err'] = 'Please enter name of the customer !';
+            if ( empty($data['first_name']) ) {
+                $data['first_name_err'] = 'Please enter your first name !';
+            }
+
+            // Validate the name
+            if ( empty($data['last_name']) ) {
+                $data['last_name_err'] = 'Please enter your first name !';
             }
             
             // Validate tel
             if ( empty($data['tel']) ) {
                 $data['tel_err'] = 'Please enter the mobile number !';
+            }
+
+            // Validate email
+            if ( empty($data['email']) ) {
+                $data['email_err'] = 'Please enter the mobile number !';
             }
             
             // Validate address
@@ -59,7 +73,7 @@ class customers extends controller
             }
             
             //Make sure errors are empty
-            if ( empty($data['name_err']) && empty($data['tel_err']) && empty($data['address_err']) ) {
+            if ( empty($data['first_name_err']) && empty($data['last_name']) && empty($data['tel_err']) && empty($data['email_err']) && empty($data['address_err']) ) {
                     if ( $this->customerModel->add($data) ) {
                         flash('register_success','You are now registered !');
                         redirect('customers');
@@ -78,11 +92,15 @@ class customers extends controller
         else
         {
             $data = [
-                'name' => '',
+                'first_name' => '',
+                'last_name' => '',
                 'tel' => '',
+                'email' => '',
                 'address' => '',
-                'name_err' => '',
+                'first_name_err' => '',
+                'first_name_err' => '',
                 'tel_err' => '',
+                'email_err' => '',
                 'address_err' => ''
             ];
             $this->render('customers/add',$data);
@@ -93,30 +111,47 @@ class customers extends controller
     {
         if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
             $_POST= filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING) ;
-            $data=[
-                'id' => $id,
-                'name' => trim($_POST['name']),
+
+            //Process form
+            $data = [
+                'first_name' => trim($_POST['first_name']),
+                'last_name' => trim($_POST['last_name']),
                 'tel' => trim($_POST['tel']),
+                'email' => trim($_POST['email']),
                 'address' => trim($_POST['address']),
-                'name_err' => '',
+                'first_name_err' => '',
+                'last_name_err' => '',
                 'tel_err' => '',
+                'email_err' => '',
                 'address_err' => ''
             ];
             
-            // On valide le name
-            if ( empty($data['name']) ) {
-                $data['name_err'] = 'Veuillez entrer votre name !';
+            // Validate the first name
+            if ( empty($data['first_name']) ) {
+                $data['first_name_err'] = 'Please enter your first name !';
             }
-            // On valide le name d'utilisateur
+
+            // Validate the last name
+            if ( empty($data['last_name']) ) {
+                $data['last_name_err'] = 'Please enter your first name !';
+            }
+            
+            // Validate tel
             if ( empty($data['tel']) ) {
-                $data['tel_err'] = 'Veuillez entrer votre numero de telephone !';
+                $data['tel_err'] = 'Please enter the mobile number !';
             }
+
+            // Validate email
+            if ( empty($data['email']) ) {
+                $data['email_err'] = 'Please enter email address !';
+            }
+            
             // Validate address
             if ( empty($data['address']) ) {
-                $data['address_err'] = 'Veuillez entrer l\'address !';
+                $data['address_err'] = 'Please enter the address !';
             }
             //Make sure errors are empty
-            if ( empty($data['name_err']) && empty($data['tel_err']) && empty($data['address_err']) ) {
+            if ( empty($data['first_name_err']) && empty($data['last_name']) && empty($data['tel_err']) && empty($data['email_err']) && empty($data['address_err']) ) {
                     if ( $this->customerModel->update($data) ) {
                         redirect('customers');
                     } else {
@@ -135,11 +170,15 @@ class customers extends controller
             $customer=$this->customerModel->getcustomerById($id);
             $data = [
                 'id'=>$customer->customer_id,
-                'name' => $customer->name,
+                'first_name' => $customer->first_name,
+                'last_name' => $customer->last_name,
                 'tel' => $customer->tel,
+                'email' => $customer->email,
                 'address' => $customer->address,
-                'name_err' => '',
+                'first_name_err' => '',
+                'last_name_err' => '',
                 'tel_err' => '',
+                'email_err' => '',
                 'address_err' => ''
             ];
             $this->render('customers/edit',$data);
