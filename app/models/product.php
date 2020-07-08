@@ -20,8 +20,8 @@ class product
 
     public function add($data)
     {
-        $this->db->query('insert into product(fk_cat_id,product_name,unit_price) values (:fk_cat_id, :product_name, :unit_price)');
-        $this->db->bind('fk_cat_id', $data['fk_cat_id']);
+        $this->db->query('insert into products(cat_id,product_name,unit_price) values (:cat_id, :product_name, :unit_price)');
+        $this->db->bind('cat_id', $data['cat_id']);
         $this->db->bind('product_name', $data['product_name']);
         $this->db->bind('unit_price', $data['unit_price']);
         if ($this->db->execute()) {
@@ -32,8 +32,8 @@ class product
 
     public function update($data)
     {
-        $this->db->query('update product set product_name = :product_name, unit_price = :unit_price WHERE product_id=:product_id');
-        $this->db->bind(':product_id', $data['id']);
+        $this->db->query('UPDATE products SET cat_id = :cat_id, product_name = :product_name, unit_price = :unit_price WHERE id=:id');
+        $this->db->bind(':id', $data['id']);
         $this->db->bind(':product_name', $data['product_name']);
         $this->db->bind(':unit_price', $data['unit_price']);
         if ($this->db->execute()) {
@@ -44,7 +44,7 @@ class product
 
     public function delete($id)
     {
-        $this->db->query('DELETE FROM product WHERE product_id = :id');
+        $this->db->query('DELETE FROM products WHERE id = :id');
         // Bind values
         $this->db->bind(':id', $id);
 
@@ -58,20 +58,20 @@ class product
 
     public function getProductById($id)
     {
-        $this->db->query('SELECT * FROM product WHERE product_id =:id');
+        $this->db->query('SELECT * FROM products WHERE id =:id');
         $this->db->bind(':id', $id);
        return $this->db->single();
     }
 
     public function getProducts()
     {
-        $this->db->query('Select * FROM product');
+        $this->db->query('SELECT * FROM products');
         return $this->db->resultSet();
     }
 
     public function getProductByName($product)
     {
-        $this->db->query('SELECT * FROM product WHERE product_name = :product_name');
+        $this->db->query('SELECT * FROM products WHERE product_name = :product_name');
         $this->db->bind(':product_name',$product);
         $this->db->single();
 
@@ -86,8 +86,8 @@ class product
     {
         if (isset($_GET['q'])) {
             $q=intval($_GET['q']);
-         $this->db->query('SELECT category.cat_id,category.cat_name,product.product_id,product.fk_cat_id,
-        product.product_name,product.unit_price FROM category,product WHERE category.cat_id=product.fk_cat_id AND category.cat_id=:q');
+         $this->db->query('SELECT categories.id,categories.cat_name,products.id,products.cat_id,
+        products.product_name,products.unit_price FROM categories,products WHERE categories.id=products.cat_id AND categories.id=:q');
         $this->db->bind(':q', $q);
         return $this->db->resultSet();
         }
@@ -100,8 +100,8 @@ class product
         if (isset($_GET['q'])) {
             # code...
             $q = intval($_GET['q']);
-            $this->db->query('SELECT category.cat_id,category.cat_name,product.product_id,product.fk_cat_id,
-        product.product_name,product.unit_price FROM category,product WHERE category.cat_id=product.fk_cat_id AND product.product_id=:q');
+            $this->db->query('SELECT categories.id,categories.cat_name,products.id,products.cat_id,
+        products.product_name,products.unit_price FROM categories,products WHERE categories.id=products.cat_id AND products.id=:q');
             $this->db->bind(':q', $q);
             return $this->db->resultSet();
         }
