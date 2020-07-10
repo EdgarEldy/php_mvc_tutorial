@@ -106,7 +106,7 @@ class categories extends controller
         {
             $category=$this->categoryModel->getCategoryById($id);
             $data=[
-                'id'=>$category->cat_id,
+                'id'=>$category->id,
                 'cat_name'=> $category->cat_name,
                 'cat_name_err'=>''
             ];
