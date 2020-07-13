@@ -21,9 +21,9 @@ class product
     public function add($data)
     {
         $this->db->query('insert into products(cat_id,product_name,unit_price) values (:cat_id, :product_name, :unit_price)');
-        $this->db->bind('cat_id', $data['cat_id']);
-        $this->db->bind('product_name', $data['product_name']);
-        $this->db->bind('unit_price', $data['unit_price']);
+        $this->db->bind(':cat_id', $data['cat_id']);
+        $this->db->bind(':product_name', $data['product_name']);
+        $this->db->bind(':unit_price', $data['unit_price']);
         if ($this->db->execute()) {
           return TRUE  ;
         }
