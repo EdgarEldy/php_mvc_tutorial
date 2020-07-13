@@ -26,7 +26,7 @@
               <td><?= $customer->address; ?></td>
               <td>
                 <div class="card-footer">
-                  <a href="<?= URL_ROOT; ?>/customers/edit/<?= $customer->id ?>" class="btn btn-primary">Modifier</a>
+                  <a href="<?= URL_ROOT; ?>/customers/edit/<?= $customer->id ?>" class="btn btn-primary">Edit</a>
                   <form action="<?= URL_ROOT; ?>/customers/delete/<?= $customer->id; ?>" method="post">
                     <button type="submit" onclick="return confirm('Are you sure you want to delete this customer ?')" class="btn btn-danger btn-sm">Delete</button>
                   </form>
