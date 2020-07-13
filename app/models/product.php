@@ -66,7 +66,8 @@ class product
 
     public function getProducts()
     {
-        $this->db->query('SELECT * FROM products');
+        $this->db->query('SELECT categories.id, categories.cat_name, products.id, products.cat_id,
+        products.product_name, products.unit_price from categories, products where categories.id = products.cat_id');
         return $this->db->resultSet();
     }
 
