@@ -37,7 +37,7 @@ class customer
 
     public function update($data)
     {
-        $this->db->query('UPDATE customers set first_name = :first_name, last_name = :last_name, tel = :tel, address = :address WHERE id = :id');
+        $this->db->query('UPDATE customers SET first_name = :first_name, last_name = :last_name, tel = :tel, email = :email, address = :address WHERE id = :id');
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':first_name', $data['first_name']);
         $this->db->bind(':last_name', $data['last_name']);
