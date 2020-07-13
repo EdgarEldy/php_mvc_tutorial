@@ -34,6 +34,7 @@ class product
     {
         $this->db->query('UPDATE products SET cat_id = :cat_id, product_name = :product_name, unit_price = :unit_price WHERE id=:id');
         $this->db->bind(':id', $data['id']);
+        $this->db->bind(':cat_id', $data['cat_id']);
         $this->db->bind(':product_name', $data['product_name']);
         $this->db->bind(':unit_price', $data['unit_price']);
         if ($this->db->execute()) {
