@@ -39,18 +39,19 @@ class products extends controller
             //Process form
             $data = [
                 'category'=>$category,
-                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'cat_id'=>trim($_POST['cat_id']),
                 'product_name' => trim($_POST['product_name']),
                 'unit_price' => trim($_POST['unit_price']),
+                'cat_id_err' => '',
                 'product_name_err' => '',
                 'unit_price_err' => ''
             ];
 
             //Validate category id
 
-            if (empty($data['fk_cat_id'])) {
+            if (empty($data['cat_id'])) {
                 # code...
-                $data['fk_cat_id_err'] = 'Please select the category';
+                $data['cat_id_err'] = 'Please select the category';
             }
 
             // Validate product name
@@ -62,7 +63,7 @@ class products extends controller
                     $data['product_name_err'] = 'This product already exists !';
                 }
             }
-            
+
             //Validate unit price
             if (empty($data['unit_price'])) {
                 # code...
@@ -71,7 +72,7 @@ class products extends controller
             }
 
             //Make sure errors are empty
-            if ( empty($data['fk_cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
+            if ( empty($data['cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
 
                 if ( $this->productModel->add($data) ) {
                     redirect('products');
@@ -92,10 +93,10 @@ class products extends controller
             $categories=$this->categoryModel->getCategories();
             $data = [
                 'categories'=>$categories,
-                'fk_cat_id'=>'',
+                'cat_id'=>'',
                 'product_name' => '',
                 'unit_price' => '',
-                'fk_cat_id_err' => '',
+                'cat_id_err' => '',
                 'product_name_err' => '',
                 'unit_price_err' => ''
             ];
@@ -112,18 +113,19 @@ class products extends controller
             $data=[
                 'id' => $id,
                 'categories'=>$categories,
-                'fk_cat_id'=>trim($_POST['fk_cat_id']),
+                'cat_id'=>trim($_POST['cat_id']),
                 'product_name'=>trim($_POST['product_name']),
                 'unit_price'=>trim($_POST['unit_price']),
+                'cat_id_err'=>'',
                 'product_name_err'=>'',
                 'unit_price_err'=>''
             ];
 
             //Validate category id
 
-            if (empty($data['fk_cat_id'])) {
+            if (empty($data['cat_id'])) {
                 # code...
-                $data['fk_cat_id_err'] = 'Please select the category';
+                $data['cat_id_err'] = 'Please select the category';
             }
 
             // Validate product name
@@ -135,7 +137,7 @@ class products extends controller
                     $data['product_name_err'] = 'This product already exists !';
                 }
             }
-            
+
             //Validate unit price
             if (empty($data['unit_price'])) {
                 # code...
@@ -143,7 +145,7 @@ class products extends controller
 
             }
 
-            if ( empty($data['fk_cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
+            if ( empty($data['cat_id_err']) && empty($data['product_name_err']) && empty($data['unit_price_err']) ) {
                 if ($this->productModel->update($data)) {
                     redirect('products');
                 }
@@ -154,17 +156,17 @@ class products extends controller
         }
 
         else
-        {   
+        {
             $categories = $this->categoryModel->getCategories();
             $product=$this->productModel->getProductById($id);
 
             $data=[
-                'id'=>$product->product_id,
+                'id'=>$product->id,
                 'categories'=>$categories,
-                'fk_cat_id'=>$product->fk_cat_id,
+                'cat_id'=>$product->cat_id,
                 'product_name'=> $product->product_name,
                 'unit_price'=> $product->unit_price,
-                'fk_cat_id_err' => '',
+                'cat_id_err' => '',
                 'product_name_err' => '',
                 'unit_price_err' => ''
             ];
