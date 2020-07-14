@@ -20,7 +20,7 @@ class profile
 
     public function add($data)
     {
-        $this->db->query('insert into profile(profile_name) values ( :profile_name)');
+        $this->db->query('insert into profiles(profile_name) values ( :profile_name)');
         $this->db->bind('profile_name', $data['profile_name']);
         if ($this->db->execute()) {
             return TRUE  ;
@@ -30,7 +30,7 @@ class profile
 
     public function update($data)
     {
-        $this->db->query('update profile set profile_name = :profile_name where profile_id=:profile_id');
+        $this->db->query('update profiles set profile_name = :profile_name where profile_id=:profile_id');
         $this->db->bind(':profile_id', $data['id']);
         $this->db->bind(':profile_name', $data['profile_name']);
         if ($this->db->execute()) {
@@ -41,7 +41,7 @@ class profile
 
     public function delete($id)
     {
-        $this->db->query('DELETE FROM profile where profile_id = :id');
+        $this->db->query('DELETE FROM profiles where profile_id = :id');
         // Bind values
         $this->db->bind(':id', $id);
 
@@ -55,20 +55,20 @@ class profile
 
     public function getProfiles()
     {
-        $this->db->query('select * from profile');
+        $this->db->query('select * from profiles');
         return $this->db->resultSet();
     }
 
     public function getProfileById($id)
     {
-        $this->db->query('select * from profile where profile_id =:id');
+        $this->db->query('select * from profiles where profile_id =:id');
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
 
     public function getprofileByName($profil)
     {
-        $this->db->query('select * from profile where profile_name = :profile_name');
+        $this->db->query('select * from profiles where profile_name = :profile_name');
         $this->db->bind(':profile_name',$profil);
         $this->db->single();
 
