@@ -66,7 +66,7 @@ class profile
         return $this->db->single();
     }
 
-    public function getprofileByName($profil)
+    public function getProfileByName($profil)
     {
         $this->db->query('select * from profiles where profile_name = :profile_name');
         $this->db->bind(':profile_name',$profil);

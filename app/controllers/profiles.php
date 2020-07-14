@@ -4,7 +4,7 @@ use php_mvc_tutorial\app\libraries\controller\controller;
 /**
  *
  * @author EDGARELDY
- *        
+ *
  */
 class profiles extends controller
 {
@@ -16,7 +16,7 @@ class profiles extends controller
     {
         $this->profileModel=$this->model('profile');
     }
-    
+
     public function index()
     {
         // if (!isLoggedIn()) {
@@ -28,7 +28,7 @@ class profiles extends controller
         ];
         return $this->render('profiles/index',$data);
     }
-    
+
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -38,20 +38,20 @@ class profiles extends controller
                 'profile_name' => trim($_POST['profile_name']),
                 'profile_name_err' => ''
             ];
-            
+
             // Validate profile name
             if ( empty($data['profile_name']) ) {
                 $data['profile_name_err'] = 'Please enter profile name !';
             } else {
                 // Check profile name
-                if ( $this->profileModel->getprofilByName($data['profile_name']) ) {
+                if ( $this->profileModel->getProfileByName($data['profile_name']) ) {
                     $data['profile_name_err'] = 'Profile name already exists !';
                 }
             }
-            
+
             //Make sure errors are empty
             if ( empty($data['profile_name_err']) ) {
-                
+
                 if ( $this->profileModel->add($data) ) {
                     //flash('Enregistrement r�ussi','Le profil a ete ajout� !');
                     redirect('profiles/index');
@@ -64,9 +64,9 @@ class profiles extends controller
                 // Load view with errors
                 $this->render('profiles/add',$data);
             }
-            
+
         }
-        
+
         else
         {
             $data = [
@@ -76,7 +76,7 @@ class profiles extends controller
             $this->render('profiles/add',$data);
         }
     }
-    
+
     public function edit($id)
     {
         if ($_SERVER['REQUEST_METHOD']== 'POST' ) {
@@ -86,12 +86,12 @@ class profiles extends controller
                 'profile_name'=>trim($_POST['profile_name']),
                 'profile_name_err'=>''
             ];
-            
+
             //Validation
             if (empty($data['profile_name'])) {
                 $data['profile_name_err'] = 'Please enter profile name !'  ;
             }
-            
+
             if (empty($data['profile_name_err'])) {
                 if ($this->profileModel->update($data)) {
                     flash('Mise a jour reussi', 'Le profil a ete mis a jour ')  ;
@@ -99,9 +99,9 @@ class profiles extends controller
                 }
                 else die('Something went wrong !');
             }
-            else $this->render('profiles/edit',$data);           
+            else $this->render('profiles/edit',$data);
         }
-        
+
         else
         {
             $profile=$this->profileModel->getprofileById($id);
@@ -113,7 +113,7 @@ class profiles extends controller
             $this->render('profiles/edit',$data);
         }
     }
-    
+
     public function delete($id)
     {
         if($_SERVER['REQUEST_METHOD']=='POST') {
@@ -123,10 +123,9 @@ class profiles extends controller
             } else {
                 die('Something went wrong');
             }
-            
+
         } else {
             redirect('profiles/index');
         }
     } //end function
 }
-
