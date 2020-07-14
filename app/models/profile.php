@@ -30,8 +30,8 @@ class profile
 
     public function update($data)
     {
-        $this->db->query('update profiles set profile_name = :profile_name where profile_id=:profile_id');
-        $this->db->bind(':profile_id', $data['id']);
+        $this->db->query('update profiles set profile_name = :profile_name where id=:id');
+        $this->db->bind(':id', $data['id']);
         $this->db->bind(':profile_name', $data['profile_name']);
         if ($this->db->execute()) {
             return TRUE ;
@@ -41,7 +41,7 @@ class profile
 
     public function delete($id)
     {
-        $this->db->query('DELETE FROM profiles where profile_id = :id');
+        $this->db->query('DELETE FROM profiles where id = :id');
         // Bind values
         $this->db->bind(':id', $id);
 
@@ -61,7 +61,7 @@ class profile
 
     public function getProfileById($id)
     {
-        $this->db->query('select * from profiles where profile_id =:id');
+        $this->db->query('select * from profiles where id =:id');
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
