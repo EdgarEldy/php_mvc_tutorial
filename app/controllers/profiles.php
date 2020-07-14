@@ -106,7 +106,7 @@ class profiles extends controller
         {
             $profile=$this->profileModel->getprofileById($id);
             $data=[
-                'id'=>$profile->profile_id,
+                'id'=>$profile->id,
                 'profile_name'=> $profile->profile_name,
                 'profile_name_err'=>''
             ];
