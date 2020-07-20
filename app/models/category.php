@@ -79,4 +79,13 @@ class category
         else
             return FALSE;
     }
+
+    // Getting product category by product id
+    public function getCatNameByProductId($id)
+    {
+        $this->db->query('SELECT categories.id, categories.cat_name AS category_name, products.id, products.cat_id AS category_id FROM categories, products 
+        WHERE categories.id = products.cat_id AND products.id = :id ');
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
 }
