@@ -113,6 +113,8 @@ class products extends controller
             $data=[
                 'id' => $id,
                 'categories'=>$categories,
+                'category_id' => '',
+                'category_name' => '',
                 'cat_id'=>trim($_POST['cat_id']),
                 'product_name'=>trim($_POST['product_name']),
                 'unit_price'=>trim($_POST['unit_price']),
@@ -159,11 +161,13 @@ class products extends controller
         {
             $categories = $this->categoryModel->getCategories();
             $product=$this->productModel->getProductById($id);
+            $category = $this->categoryModel->getCatNameByProductId($id);
 
             $data=[
                 'id'=>$product->id,
                 'categories'=>$categories,
-                'cat_id'=>$product->cat_id,
+                'category_id'=>$category->category_id,
+                'category_name'=>$category->category_name,
                 'product_name'=> $product->product_name,
                 'unit_price'=> $product->unit_price,
                 'cat_id_err' => '',
