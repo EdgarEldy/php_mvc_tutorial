@@ -15,7 +15,15 @@ class user
     private $db;
     public function __construct()
     {
-        $this->db=new connection();
+        $this->db = new connection();
+    }
+
+    public function getUsers()
+    {
+        $this->db->query('SELECT profiles.id,profiles.profile_name,users.id,users.profile_id,users.first_name,
+        users.last_name, users.email, users.username, DATE_FORMAT(users.created_at,"%d/%m/%Y") as created_at from profiles,users WHERE
+		profiles.id=users.profile_id');
+        return $this->db->resultSet();
     }
 
     public function add($data)
@@ -27,7 +35,7 @@ class user
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':pwd', $data['pwd']);
         // Execute
-        if ( $this->db->execute() ) {
+        if ($this->db->execute()) {
             return true;
         } else {
             return false;
@@ -42,9 +50,8 @@ class user
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':pwd', $data['pwd']);
         if ($this->db->execute()) {
-            return TRUE ;
-        }
-        else return false;
+            return TRUE;
+        } else return false;
     }
 
     public function delete($id)
@@ -54,25 +61,24 @@ class user
         $this->db->bind(':id', $id);
 
         // Execute
-        if( $this->db->execute() ){
+        if ($this->db->execute()) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function login($username,$pwd)
+    public function login($username, $pwd)
     {
         $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
         from profile,user where profile.profile_id=user.fk_profile_id and user.username = :username');
         $this->db->bind(':username', $username);
-        $row =$this->db->single();
+        $row = $this->db->single();
 
-        $hashed_pwd=$row->pwd;
+        $hashed_pwd = $row->pwd;
         if (password_verify($pwd, $hashed_pwd)) {
-            return $row  ;
-        }
-        else return FALSE;
+            return $row;
+        } else return FALSE;
     }
 
     public function checkPwd($email, $pwd)
@@ -80,12 +86,12 @@ class user
         $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
         from profile,user where profile.profile_id=user.fk_profile_id and user.email = :email');
         $this->db->bind(':email', $email);
-        $row =$this->db->single();
+        $row = $this->db->single();
 
-        $hashed_pwd=$row->pwd;
+        $hashed_pwd = $row->pwd;
         if (password_verify($pwd, $hashed_pwd))
             return $row;
-            else return FALSE;
+        else return FALSE;
     }
 
     public function getUserByUsername($username)
@@ -94,11 +100,10 @@ class user
         from profile,user where profile.profile_id=user.fk_profile_id and user.username = :username');
         $this->db->bind(':username', $username);
         $this->db->single();
-        if ($this->db->rowCount() > 0 ) {
-           return TRUE ;
-        }
-            else
-                return FALSE;
+        if ($this->db->rowCount() > 0) {
+            return TRUE;
+        } else
+            return FALSE;
     }
 
     public function getUserById($id)
@@ -115,14 +120,5 @@ class user
         from profile,user where profile.profile_id=user.fk_profile_id and user.user_id = :id');
         $this->db->bind(':id', $id);
         return $this->db->resultSet();
-    }
-
-    public function getUsers()
-    {
-        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username, 
-            DATE_FORMAT(user.created_at,"%d/%m/%Y") as created_at from profile,user WHERE
-		profile.profile_id=user.fk_profile_id');
-        return $this->db->resultSet();
-
     }
 }
