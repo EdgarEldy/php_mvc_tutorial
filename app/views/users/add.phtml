@@ -7,13 +7,31 @@
 								
 								<div class="form-group">
 									<label>Profile :</label>
-									<select name="fk_profile_id" class="form-control <?= (!empty($data['fk_profile_id_err'])) ? 'is-invalid' : ''; ?>">
+									<select name="profile_id" class="form-control <?= (!empty($data['profile_id_err'])) ? 'is-invalid' : ''; ?>">
 										<option value=""></option>		
 										<?php foreach ($data['profiles'] as $profile) : ?>	
-										<option value="<?php echo $profile->profile_id;?>"><?php echo $profile->profile_name;?></option>
+										<option value="<?php echo $profile->id;?>"><?php echo $profile->profile_name;?></option>
 										<?php endforeach;?>
 									</select>
-									<span class="invalid-feedback"><?= $data['fk_profile_id_err'] ?></span>
+									<span class="invalid-feedback"><?= $data['profile_id_err'] ?></span>
+								</div>
+								<div class="form-group">
+								<label>First name :</label>
+									<input type="text" name="first_name" class="form-control <?= (!empty($data['first_name_err'])) ? 'is-invalid' : ''; ?>" 
+									placeholder="" value="<?= $data['first_name']; ?>">
+									<span class="invalid-feedback"><?= $data['first_name_err'] ?></span>
+								</div>
+								<div class="form-group">
+								<label>Last name :</label>
+									<input type="text" name="last_name" class="form-control <?= (!empty($data['last_name_err'])) ? 'is-invalid' : ''; ?>" 
+									placeholder="" value="<?= $data['last_name']; ?>">
+									<span class="invalid-feedback"><?= $data['last_name_err'] ?></span>
+								</div>
+								<div class="form-group">
+								<label>Email :</label>
+									<input type="email" name="email" class="form-control <?= (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>" 
+									placeholder="" value="<?= $data['email']; ?>">
+									<span class="invalid-feedback"><?= $data['email_err'] ?></span>
 								</div>
 								<div class="form-group">
 								<label>Username :</label>
@@ -22,13 +40,13 @@
 									<span class="invalid-feedback"><?= $data['username_err'] ?></span>
 								</div>	
 								<div class="form-group">	
-									<label>Mot de passe :</label>
+									<label>Password :</label>
 									<input type="password" name="pwd" class="form-control <?= (!empty($data['pwd_err'])) ? 'is-invalid' : ''; ?>" 
 									placeholder="" value="<?= $data['pwd']; ?>">
 									<span class="invalid-feedback"><?= $data['pwd_err'] ?></span>
 								</div>
 								<div class="form-group">	
-									<label>Confirmer mot de passe</label>
+									<label>Confirme password :</label>
 									<input type="password" name="confirm_pwd" class="form-control <?= (!empty($data['confirm_pwd_err'])) ? 'is_invalid' : '';  ?>" 
 									placeholder="" value="<?= $data['confirm_pwd']; ?>">
 									<span class="invalid-feedback"><?= $data['confirm_pwd_err'] ?></span>
