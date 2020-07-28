@@ -28,10 +28,13 @@ class user
 
     public function add($data)
     {
-        $this->db->query('INSERT INTO user (fk_profile_id,username,pwd) values
-          (:fk_profile_id, :username, :pwd)');
+        $this->db->query('INSERT INTO users (profile_id, first_name, last_name, email, username, pwd) values
+          (:profile_id, :first_name, :last_name, :email, :username, :pwd)');
         // Bind values
-        $this->db->bind(':fk_profile_id', $data['fk_profile_id']);
+        $this->db->bind(':profile_id', $data['profile_id']);
+        $this->db->bind(':first_name', $data['first_name']);
+        $this->db->bind(':last_name', $data['last_name']);
+        $this->db->bind(':email', $data['email']);
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':pwd', $data['pwd']);
         // Execute
