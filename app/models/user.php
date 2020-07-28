@@ -99,8 +99,8 @@ class user
 
     public function getUserByUsername($username)
     {
-        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
-        from profile,user where profile.profile_id=user.fk_profile_id and user.username = :username');
+        $this->db->query('SELECT profiles.id,profiles.profile_name,users.id,users.profile_id,users.username,users.pwd
+        from profiles,users where profiles.id=users.profile_id and users.username = :username');
         $this->db->bind(':username', $username);
         $this->db->single();
         if ($this->db->rowCount() > 0) {
