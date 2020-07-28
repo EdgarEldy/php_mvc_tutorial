@@ -1,36 +1,50 @@
 <div class="col-lg-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">User profile of <?= $_SESSION['username']; ?></div>
-          <div class="panel-body">
-            <div id="imprime_moi">
-              <table>
-              <thead>
-                                        <tr>
-                                        User profile
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach ($data['users'] as $user) :?>
-                                        <tr>
-                                        <td>User ID : </td>
-                                        <td><?= $user->user_id; ?> </td>
-                                        </tr>
-                                        <br/><br/>
-                                        <tr>
-                                        <td>User ID : </td>
-                                        <td><?= $user->username; ?> </td>
-                                        </tr>
-                                        <tr>
-                                        <td>Created at : </td>
-                                        <td><?= $user->created_at; ?> </td>
-                                        </tr>
-                                        
-                                        <?php endforeach;?>
-                                    </tbody>
-              </table>
-              <a href="<?= URL_ROOT; ?>/users/edit/<?= $user->id_user;?>" 
-						class="btn btn-primary">Update</a>
-            </div>
-          </div>
-        </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">User profile of <?= $_SESSION['username']; ?></div>
+    <div class="panel-body">
+      <div id="imprime_moi">
+        <table>
+          <thead>
+            <tr>
+              User profile
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($data['users'] as $user) : ?>
+              <tr>
+                <td>ID : </td>
+                <td><?= $user->id; ?> </td>
+              </tr>
+              <br /><br />
+              <tr>
+                <td>First name : </td>
+                <td><?= $user->first_name; ?> </td>
+              </tr>
+              <tr>
+              <tr>
+                <td>Last name : </td>
+                <td><?= $user->last_name; ?> </td>
+              </tr>
+              <tr>
+              <tr>
+                <td>Email : </td>
+                <td><?= $user->email; ?> </td>
+              </tr>
+              <tr>
+              <tr>
+                <td>Username : </td>
+                <td><?= $user->username; ?> </td>
+              </tr>
+              <tr>
+                <td>Created at : </td>
+                <td><?= $user->created_at; ?> </td>
+              </tr>
+
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <a href="<?= URL_ROOT; ?>/users/edit/<?= $user->id; ?>" class="btn btn-primary">Update profile</a>
       </div>
+    </div>
+  </div>
+</div>
