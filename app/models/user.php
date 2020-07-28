@@ -117,10 +117,11 @@ class user
         return $this->db->single();
     }
 
-    public function getUserByprofile($id)
+    public function getUserByProfile($id)
     {
-        $this->db->query('SELECT profile.profile_id,profile.profile_name,user.user_id,user.fk_profile_id,user.username,user.pwd
-        from profile,user where profile.profile_id=user.fk_profile_id and user.user_id = :id');
+        $this->db->query('SELECT profiles.id, profiles.profile_name, users.id, users.profile_id, users.first_name, users.last_name,
+        users.email, users.username, DATE_FORMAT(users.created_at, "%d/%/%Y") as created_at
+        from profiles,users where profiles.id=users.profile_id and users.id = :id');
         $this->db->bind(':id', $id);
         return $this->db->resultSet();
     }
