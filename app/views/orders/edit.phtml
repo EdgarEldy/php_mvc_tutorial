@@ -41,31 +41,31 @@ function getUnitPriceByProductId(str) {
 							<form role="form" action="<?= URL_ROOT; ?>/orders/add" method="post">
 								<div class="form-group">
 									<label>Customer name :</label>
-									<select name="fk_customer_id" class="form-control <?= (!empty($data['fk_customer_id_err'])) ? 'is-invalid' : ''; ?>">
+									<select name="customer_id" class="form-control <?= (!empty($data['customer_id_err'])) ? 'is-invalid' : ''; ?>">
 										<option value=""></option>		
 										<?php foreach ($data['customers'] as $customer) : ?>	
 										<option value="<?php echo $customer->customer_id;?>"><?php echo $customer->name;?></option>	
 										<?php endforeach;?>
 									</select>
-									<span class="invalid-feedback"><?= $data['fk_customer_id_err'] ?></span>
+									<span class="invalid-feedback"><?= $data['customer_id_err'] ?></span>
 								</div>
 								<div class="form-group">
 									<label>Category name :</label>
-									<select name="fk_cat_id" onchange="getProductsByCatId(this.value)" class="form-control <?= (!empty($data['fk_cat_id_err'])) ? 'is-invalid' : ''; ?>">
+									<select name="cat_id" onchange="getProductsByCatId(this.value)" class="form-control <?= (!empty($data['cat_id_err'])) ? 'is-invalid' : ''; ?>">
 										<option value=""></option>		
 										<?php foreach ($data['categories'] as $category) : ?>	
 										<option value="<?php echo $category->cat_id;?>"><?php echo $category->cat_name;?></option>	
 										<?php endforeach;?>
 									</select>
-									<span class="invalid-feedback"><?= $data['fk_cat_id_err'] ?></span>
+									<span class="invalid-feedback"><?= $data['cat_id_err'] ?></span>
 								</div>
 								<div class="form-group">
                                         <label>Products :</label>
-                                        <select name="fk_product_id" id="product" onchange="getUnitPriceByProductId(this.value)"
-                                        class="form-control <?= (!empty($data['fk_product_id_err'])) ? 'is-invalid' : ''; ?>">
+                                        <select name="product_id" id="product" onchange="getUnitPriceByProductId(this.value)"
+                                        class="form-control <?= (!empty($data['product_id_err'])) ? 'is-invalid' : ''; ?>">
                                         <option value=""></option> 
                                         </select>
-                                        <span class="invalid-feedback"><?= $data['fk_product_id_err'] ?></span>
+                                        <span class="invalid-feedback"><?= $data['product_id_err'] ?></span>
                                 </div>
 								<div class="form-group">
                                         <label>Unit price :</label>

@@ -65,33 +65,33 @@ class orders extends controller
                 'customers'=>$customers,
                 'categories'=>$categories,
                 'products'=>$products,
-                'fk_customer_id'=>trim($_POST['fk_customer_id']),
-                'fk_cat_id'=>trim($_POST['fk_cat_id']),
-                'fk_product_id'=>trim($_POST['fk_product_id']),
+                'customer_id'=>trim($_POST['customer_id']),
+                'cat_id'=>trim($_POST['cat_id']),
+                'product_id'=>trim($_POST['product_id']),
                 'unit_price' => trim($_POST['unit_price']),
                 'qty' => trim($_POST['qty']),
                 'total' => trim($_POST['total']),
-                'fk_customer_id_err' => '',
-                'fk_cat_id_err' => '',
-                'fk_product_id_err' => '',
+                'customer_id_err' => '',
+                'cat_id_err' => '',
+                'product_id_err' => '',
                 'unit_price_err' => '',
                 'qty_err' => '',
                 'total_err' => ''
             ];
             
             // Validate customer id
-            if (empty($data['fk_customer_id'])) {
-               $data['fk_customer_id_err'] = 'Please select customer name' ;
+            if (empty($data['customer_id'])) {
+               $data['customer_id_err'] = 'Please select customer name' ;
             }
 
             // Validate category name
-            if ( empty($data['fk_cat_id']) ) {
-                $data['fk_cat_id_err'] = 'Please select category name !';
+            if ( empty($data['cat_id']) ) {
+                $data['cat_id_err'] = 'Please select category name !';
             }
             
             // Validate product name
-            if ( empty($data['fk_product_id']) ) {
-                $data['fk_product_id_err'] = 'Please select product name !';
+            if ( empty($data['product_id']) ) {
+                $data['product_id_err'] = 'Please select product name !';
             }
 
             // Validate unit price
@@ -110,7 +110,7 @@ class orders extends controller
             }
 
             //Make sure errors are empty
-            if ( empty($data['fk_customer_id_err']) && empty($data['fk_cat_id_err']) && empty($data['fk_product_id_err']) && empty($data['unit_price_err']) 
+            if ( empty($data['customer_id_err']) && empty($data['cat_id_err']) && empty($data['product_id_err']) && empty($data['unit_price_err']) 
              && empty($data['qty_err']) && empty($data['total_err']) ) {
                 
                 if ( $this->orderModel->add($data) ) {
@@ -136,15 +136,15 @@ class orders extends controller
                 'customers'=>$customers,
                 'categories'=>$categories,
                 'products'=>$products,
-                'fk_customer_id'=> '',
-                'fk_cat_id'=>'',
-                'fk_product_id'=>'',
+                'customer_id'=> '',
+                'cat_id'=>'',
+                'product_id'=>'',
                 'unit_price' => '',
                 'qty' => '',
                 'total' => '',
-                'fk_customer_id_err' => '',
-                'fk_cat_id_err' => '',
-                'fk_product_id_err' => '',
+                'customer_id_err' => '',
+                'cat_id_err' => '',
+                'product_id_err' => '',
                 'unit_price_err' => '',
                 'qty_err' => '',
                 'total_err' => ''
@@ -165,33 +165,33 @@ class orders extends controller
                 'customers'=>$customers,
                 'categories'=>$categories,
                 'products'=>$products,
-                'fk_customer_id'=>trim($_POST['fk_customer_id']),
-                'fk_cat_id'=>trim($_POST['fk_cat_id']),
-                'fk_product_id'=>trim($_POST['fk_product_id']),
+                'customer_id'=>trim($_POST['customer_id']),
+                'cat_id'=>trim($_POST['cat_id']),
+                'product_id'=>trim($_POST['product_id']),
                 'unit_price' => trim($_POST['unit_price']),
                 'qty' => trim($_POST['qty']),
                 'total' => trim($_POST['total']),
-                'fk_customer_id_err' => '',
-                'fk_cat_id_err' => '',
-                'fk_product_id_err' => '',
+                'customer_id_err' => '',
+                'cat_id_err' => '',
+                'product_id_err' => '',
                 'unit_price_err' => '',
                 'qty_err' => '',
                 'total_err' => ''
             ];
             
             // Validate customer id
-            if (empty($data['fk_customer_id'])) {
-               $data['fk_customer_id_err'] = 'Please select customer name' ;
+            if (empty($data['customer_id'])) {
+               $data['customer_id_err'] = 'Please select customer name' ;
             }
 
             // Validate category name
-            if ( empty($data['fk_cat_id']) ) {
-                $data['fk_cat_id_err'] = 'Please select category name !';
+            if ( empty($data['cat_id']) ) {
+                $data['cat_id_err'] = 'Please select category name !';
             }
             
             // Validate product name
-            if ( empty($data['fk_product_id']) ) {
-                $data['fk_product_id_err'] = 'Please select product name !';
+            if ( empty($data['product_id']) ) {
+                $data['product_id_err'] = 'Please select product name !';
             }
 
             // Validate unit price
@@ -210,7 +210,7 @@ class orders extends controller
             }
 
             //Make sure errors are empty
-            if ( empty($data['fk_customer_id_err']) && empty($data['fk_cat_id_err']) && empty($data['fk_product_id_err']) && empty($data['unit_price_err']) 
+            if ( empty($data['customer_id_err']) && empty($data['cat_id_err']) && empty($data['product_id_err']) && empty($data['unit_price_err']) 
              && empty($data['qty_err']) && empty($data['total_err']) ) {
                 if ($this->orderModel->update($data)) {
                     redirect('orders/index');
@@ -233,15 +233,15 @@ class orders extends controller
                 'customers'=>$customers,
                 'categories'=>$categories,
                 'products'=>$products,
-                'fk_customer_id'=>'',
-                'fk_product_id'=>'',
-                'fk_cat_id'=>'',
+                'customer_id'=>'',
+                'product_id'=>'',
+                'cat_id'=>'',
                 'unit_price' => $order->unit_price,
                 'qty' => $order->qty,
                 'total' => $order->total,
                 'fk_customer_id_err' => '',
-                'fk_cat_id_err' => '',
-                'fk_product_id_err' => '',
+                'cat_id_err' => '',
+                'product_id_err' => '',
                 'unit_price_err' => '',
                 'qty_err' => '',
                 'total_err' => ''
