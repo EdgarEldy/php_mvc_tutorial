@@ -20,9 +20,9 @@ class order
 
       public function add($data)
       {
-          $this->db->query('INSERT INTO `order`(fk_customer_id,fk_product_id,qty,total) VALUES (:fk_customer_id, :fk_product_id, :qty, :total)');
-          $this->db->bind(':fk_customer_id', $data['fk_customer_id']);
-          $this->db->bind(':fk_product_id', $data['fk_product_id']);
+          $this->db->query('INSERT INTO orders (customer_id,product_id,qty,total) VALUES (:customer_id, :product_id, :qty, :total)');
+          $this->db->bind(':customer_id', $data['customer_id']);
+          $this->db->bind(':product_id', $data['product_id']);
           $this->db->bind(':qty', $data['qty']);
           $this->db->bind(':total', $data['total']);
           if ($this->db->execute()) {
