@@ -305,8 +305,8 @@ class users extends controller
     public function logout()
     {
         unset($_SESSION['user_id']);
-        unset($_SESSION['user_mail']);
-        unset($_SESSION['user_name']);
+        unset($_SESSION['profile_name']);
+        unset($_SESSION['username']);
         session_destroy();
         redirect('users/login');
     }
@@ -314,6 +314,7 @@ class users extends controller
     public function createUserSession($user)
     {
         $_SESSION['user_id'] = $user->id;
+        $_SESSION['profile_name'] = $user->profile_name;
         $_SESSION['username'] = $user->username;
         redirect('home');
     }
