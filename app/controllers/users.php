@@ -318,15 +318,6 @@ class users extends controller
         redirect('home');
     }
 
-    public function isLoggedIn()
-    {
-        if (isset($_SESSION['user_id']) && isset($_SESSION['user_name']) && isset($_SESSION['user_username'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function changepwd()
     {
         if (!isLoggedIn()) {
