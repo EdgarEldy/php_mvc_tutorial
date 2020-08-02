@@ -31,7 +31,7 @@
 
 
     function isLoggedIn(){
-      if ( isset($_SESSION['user_id']) && isset($_SESSION['nom_profil']) && isset($_SESSION['username'])) {
+      if ( isset($_SESSION['user_id']) && isset($_SESSION['profile_name']) && isset($_SESSION['username'])) {
           return true;
       } else {
           return false;
