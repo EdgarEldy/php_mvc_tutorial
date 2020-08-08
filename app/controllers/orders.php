@@ -36,22 +36,16 @@ class orders extends controller
 
     public function getProducts()
     {
-        # code...
-        $products = $this->productModel->getProductsByCatId();
+        if(isset($_GET['cat_id'])){
+            $cat_id = intval($_GET['cat_id']);
+            $products = $this->productModel->getProductsByCatId($cat_id);
         $data = [
             'products' => $products
         ];
-        return $this->render('orders/getProducts', $data);
-    }
-
-    public function getUnitPrice()
-        {
-            $unit_price=$this->productModel->getUnitPriceByProductId();
-            $data= [
-                'unit_price' => $unit_price
-            ];
-            return $this->render('orders/getUnitPrice', $data);
+         $this->view('orders/getProducts', $data);
         }
+        
+    }
     
     public function add()
     {
