@@ -89,16 +89,11 @@ class product
             return $this->db->resultSet();
     }
 
-    public function getUnitPriceByProductId()
+    public function getUnitPriceByProductId($id)
     {
-        # code...
-        if (isset($_GET['q'])) {
-            # code...
-            $q = intval($_GET['q']);
             $this->db->query('SELECT categories.id,categories.cat_name,products.id,products.cat_id,
-        products.product_name,products.unit_price FROM categories,products WHERE categories.id=products.cat_id AND products.id=:q');
-            $this->db->bind(':q', $q);
+        products.product_name,products.unit_price FROM categories,products WHERE categories.id=products.cat_id AND products.id=:id');
+            $this->db->bind(':id', $id);
             return $this->db->resultSet();
-        }
     }
 }
