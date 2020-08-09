@@ -19,3 +19,12 @@ $(function () {
         }
     });
 });
+
+$(function () {
+    $('#product_id').on('change', function () {
+        var product_id = $(this).val();
+        $.get(url_root + '/orders/getUnitPrice', { product_id: product_id }, function (data) {
+            $('#unit_price').val(data);
+        });
+    });
+});
