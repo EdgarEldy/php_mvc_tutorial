@@ -94,6 +94,6 @@ class product
             $this->db->query('SELECT categories.id,categories.cat_name,products.id,products.cat_id,
         products.product_name,products.unit_price FROM categories,products WHERE categories.id=products.cat_id AND products.id=:id');
             $this->db->bind(':id', $id);
-            return $this->db->resultSet();
+            return $this->db->single();
     }
 }
