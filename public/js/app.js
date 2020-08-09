@@ -28,3 +28,12 @@ $(function () {
         });
     });
 });
+
+$(function () {
+    $('#qty').on('change', function () {
+        var price = $('#unit_price').val();
+        var qty = $(this).val();
+        total = price * qty;
+        $('#total').val(total);
+    });
+});
