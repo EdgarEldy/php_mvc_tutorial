@@ -46,6 +46,19 @@ class orders extends controller
         }
         
     }
+
+    public function getUnitPrice()
+    {
+        if(isset($_GET['product_id'])){
+            $product_id = intval($_GET['product_id']);
+            $product = $this->productModel->getUnitPriceByProductId($product_id);
+            $data = [
+                'unit_price' => $product->unit_price
+            ];
+            $this->view('orders/getUnitPrice', $data);
+        }
+
+    }
     
     public function add()
     {
